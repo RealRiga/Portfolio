@@ -1,15 +1,14 @@
 "use client"
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
-import { useEffect } from 'react';  // Import useEffect from react
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import Nav from '@/components/Nav';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import { useEffect } from 'react'; // Import useEffect from react
+import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: 'My Portfolio',
   description: 'Portfolio App',
 }
@@ -19,7 +18,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  useEffect(()=>{
+  useEffect(() => {
 
     // You can also pass an optional settings object
     // below listed default settings
@@ -33,8 +32,8 @@ export default function RootLayout({
       disableMutationObserver: false, // disables automatic mutations' detections (advanced)
       debounceDelay: 50, // the delay on debounce used while resizing window (advanced)
       throttleDelay: 99, // the delay on throttle used while scrolling the page (advanced)
-      
-    
+
+
       // Settings that can be overridden on per-element basis, by `data-aos-*` attributes:
       offset: 120, // offset (in px) from the original trigger point
       delay: 0, // values from 0 to 3000, with step 50ms
@@ -43,15 +42,15 @@ export default function RootLayout({
       once: true, // whether animation should happen only once - while scrolling down
       mirror: false, // whether elements should animate out while scrolling past them
       anchorPlacement: 'top-bottom', // defines which position of the element regarding to window should trigger the animation
-    
+
     });
-      },[]);
+  }, []);
 
   return (
     <html lang="en">
       {/* <Nav openNav={openNav}/> */}
       <body className={inter.className}>{children}</body>
-        
+
     </html>
-  )
-}
+  );
+};

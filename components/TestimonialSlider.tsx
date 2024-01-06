@@ -33,7 +33,7 @@ const TestimonialSlider = () => {
             itemClass="item"
         >
             <ClientReview
-            image="/image/c1.jpg"
+            image="/image/fresh.jpg"
             name="Mr. Obed Jonathan"
             role="Web Developer"
             text="Service rendered perfectly"
@@ -46,7 +46,7 @@ const TestimonialSlider = () => {
             />
             <ClientReview
             image="/image/c1.jpg"
-            name="Mr. Obed Favour"
+            name="Mr. Ariyo Joey"
             role="Web Developer"
             text="Excellent vision and understanding of each task given"
             />
