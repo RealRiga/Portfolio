@@ -47,7 +47,7 @@ const Services = () => {
                     <p className='text-[15px] text-[#d3d2d2] font-normal'>
                     On the frontend, I breathe life into designs, creating captivating and responsive user interfaces that leave lasting impressions.
                     Proficient in HTML, CSS, and JavaScript, I meticulously translate creative visions into dynamic, user-friendly realities.
-                    Responsive design isn't just a checkbox – it's a commitment to delivering seamless experiences across all devices.
+                    Responsive design isn&rsquo;t just a checkbox, it&rsquo;s a commitment to delivering seamless experiences across all devices.
                     </p>
                 </div>
                 </div>
