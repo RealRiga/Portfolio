@@ -18,8 +18,7 @@ const Skills = () => {
                     />
                     <SkillsItems title="C# Developer" year="2023 - Till Date"
                     text="As a C# developer, I bring precision and power to backend development. With a keen eye for detail, I craft solutions
-                    that seamlessly integrate with frontend technologies. C# empowers me to create secure and scalable applications, and my commitment
-                    to clean, maintainable code ensures that these solutions stand the test of time."
+                    that seamlessly integrate with frontend technologies. C# empowers me to create secure and scalable applications., and my commitment."
                     />
                     
 
@@ -42,8 +41,7 @@ const Skills = () => {
                     <SkillsItems title="Next Js Developer" year="2023 - Till Date"
                     text="Taking the frontend experience to the next level, I excel as a Next.js developer. With this framework, I seamlessly
                     blend server-side rendering with a delightful user experience. Navigating the complexities of Next.js, I ensure that web
-                    applications are not only performant but also easily maintainable. From optimizing page load times to crafting intuitive navigation,
-                    I thrive on pushing the boundaries of what's possible."
+                    applications are not only performant but also easily maintainable. From optimizing page load times to crafting intuitive navigation."
                     />
                     <SkillsItems title="Java Developer" year="2023 - Till Date"
                     text="In the backend landscape, my proficiency extends to Java development. Armed with the robust capabilities of Java, I architect
