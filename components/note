@@ -1,0 +1,69 @@
+// Deploying to Netlify from the terminal
+Step 1: Put Your Next.js Site Code in a Git Repo
+While this is technically optional, the magic of Netlify is that every push to the main branch your GitHub, GitLab, or Bitbucket repo triggers a new build and deploy of your site.
+
+Step 2: Create a New Netlify Site From Your Next.js Site Repo
+Now that our code is available in a repo, we can configure Netlify to deploy our Next.js site any time a new commit is pushed.
+
+This is possible in two ways: using the Netlify CLI, and using the Netlify app UI.
+
+Netlify provides a powerful CLI that allows you to interact with your account. This means you can deploy a Next.js site to Netlify without ever leaving the command line! I love this option because it's fast and I can do it at the same time as I push the repo code to GitHub for the first time.
+
+If you don't already have it, install the Netlify CLI globally and log in:
+
+# install the Netlify CLI globally
+npm install -g netlify-cli
+
+# after the above code you will get a depreciation warning you should do
+npm update
+
+# log into your Netlify account
+ntl login
+Next, navigate to the site's root directory and run ntl init:
+
+# move into the site's root directory
+cd ~/path/to/your/nextjs-site/
+
+# create a new Netlify site
+ntl init
+Terminal output of deploying a Next.js site to Netlify using the Netlify CLI
+
+The CLI will guide you through configuring your new site:
+
+Choose "Create & configure a new site"
+Use the arrow keys to choose the Netlify team you want to deploy to
+Choose a name for your site or leave it blank to have one auto-generated (you can change this later)
+Set the build command to next build
+For the directory to deploy, enter out
+Heads up! The directory to deploy can be anything you want except the current directory (.). Using the current directory would also publish your source code publicly.
+
+
+To initialize a new git repo follow the steps below.
+
+1. Initialize a new repo:
+
+   git init
+
+2. Add your files
+
+   git add .
+
+3. Commit your files
+
+   git commit -m 'initial commit'
+
+4. Create a new repo in GitHub https://github.com/new
+
+5. Link the remote repo with this local directory
+
+   git remote add origin git@github.com:YourGithubName/your-repo-slug.git
+
+   git remote add origin https://github.com/RealRiga/New_Portfolio.git
+
+6. Push up your files
+
+   git push -u origin main
+
+7. Initialize your Netlify Site
+
+   netlify init
