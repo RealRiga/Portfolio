@@ -35,11 +35,11 @@ const TestimonialSlider = () => {
             <ClientReview
             image="/image/fresh.jpg"
             name="Mr. Obed Jonathan"
-            role="Web Developer"
+            role="Software Developer"
             text="Service rendered perfectly"
             />
             <ClientReview
-            image="/image/c2.jpg"
+            image="/image/eze.jpg"
             name="Mr. Ezechukwu Williams Ojukwu "
             role="Web & Mobile Developer"
             text="Punctual and Efficient"
@@ -47,7 +47,7 @@ const TestimonialSlider = () => {
             <ClientReview
             image="/image/ife.jpg"
             name="Mr. Ariyo Joey"
-            role="Web Developer"
+            role="Web & Mobile Developer"
             text="Excellent vision and understanding of each task given"
             />
         </Carousel>

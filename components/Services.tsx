@@ -14,7 +14,7 @@ const Services = () => {
                  uppercase font-semibold text-center p-[2rem]'>
                     <CodeBracketSquareIcon className='w-[6rem] h-[6rem] mx-auto text-[#d3fae8]' />
                     <h1 className='text-[20px] md:text-[30px] mt-[1.5rem] mb-[1.5rem]'>
-                        Frontend
+                        Frontend Mobile & Web
                     </h1>
                     <p className='text-[15px] text-[#d3d2d2] font-normal'>
                     I am a frontend developer on a mission to create immersive and user-centric digital experiences. With a
