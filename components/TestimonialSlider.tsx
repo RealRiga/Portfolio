@@ -45,7 +45,7 @@ const TestimonialSlider = () => {
             text="Punctual and Efficient"
             />
             <ClientReview
-            image="/image/c1.jpg"
+            image="/image/ife.jpg"
             name="Mr. Ariyo Joey"
             role="Web Developer"
             text="Excellent vision and understanding of each task given"
