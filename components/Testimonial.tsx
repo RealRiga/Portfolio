@@ -3,7 +3,7 @@ import TestimonialSlider from './TestimonialSlider'
 
 const Testimonial = () => {
   return (
-    <div className='bg-[#02050a] pt-[4rem] md:pt-[8rem] pb-[1rem]'>
+    <div id='testimonial' className='bg-[#02050a] pt-[4rem] md:pt-[8rem] pb-[1rem]'>
         <h1 className='heading'>
             Client <span className='text-yellow-400'>Review</span>
         </h1>

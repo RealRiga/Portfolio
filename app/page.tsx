@@ -1,5 +1,6 @@
 "use client"
 import About from '@/components/About';
+import Blog from '@/components/Blog';
 import Footer from '@/components/Footer';
 import Hero from '@/components/Hero';
 import MobileNav from '@/components/MobileNav';
@@ -8,18 +9,26 @@ import Projects from '@/components/Projects';
 import Services from '@/components/Services';
 import Skills from '@/components/Skills';
 import Testimonial from '@/components/Testimonial';
-import Image from 'next/image'
-import { useEffect, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
   const [nav, setNav] = useState(false);
   const openNav = () => setNav(true);
   const closeNav = () => setNav(false);
 
-  
-  useEffect(()=>{
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+        window.scrollTo({
+            top: element.offsetTop,
+            behavior: 'smooth',
+        });
+    }
+};
+
+  useEffect(() => {
 
     // You can also pass an optional settings object
     // below listed default settings
@@ -33,8 +42,8 @@ export default function Home() {
       disableMutationObserver: false, // disables automatic mutations' detections (advanced)
       debounceDelay: 50, // the delay on debounce used while resizing window (advanced)
       throttleDelay: 99, // the delay on throttle used while scrolling the page (advanced)
-      
-    
+
+
       // Settings that can be overridden on per-element basis, by `data-aos-*` attributes:
       offset: 120, // offset (in px) from the original trigger point
       delay: 0, // values from 0 to 3000, with step 50ms
@@ -43,29 +52,29 @@ export default function Home() {
       once: true, // whether animation should happen only once - while scrolling down
       mirror: false, // whether elements should animate out while scrolling past them
       anchorPlacement: 'top-bottom', // defines which position of the element regarding to window should trigger the animation
-    
+
     });
-      },[]);
+  }, []);
 
   return (
     <>
-    <div className='overflow-x-hidden'>
-      <div>
-        <MobileNav nav={nav} closeNav={closeNav} />
-        <Nav openNav={openNav} />
+      <div className='overflow-x-hidden'>
+        <div>
+          <MobileNav nav={nav} closeNav={closeNav} scrollToSection={scrollToSection} />
+          <Nav openNav={openNav} />
 
-        <Hero />
-        <div className='relative z-[30]'>
-          <About />
-          <Services />
-          <Skills />
-          <Projects />
-          <Testimonial />
-          {/* <Blog /> */}
-          <Footer />
-        </div>
+          <Hero />
+          {/* <div className='relative z-[30]'> */}
+            <About />
+            <Skills />
+            <Services />
+            <Projects />
+            <Testimonial />
+            {/* <Blog /> */}
+            <Footer />
+          </div>
+        {/* </div> */}
       </div>
-    </div>
     </>
   );
 };

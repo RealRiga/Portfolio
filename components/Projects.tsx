@@ -7,7 +7,7 @@ const Projects = () => {
   };
 
   return (
-    <div className='bg-[#02050a] pt-[4rem] md:pt-[8rem] pb-[1rem]'>
+    <div id="project" className='bg-[#02050a] pt-[4rem] md:pt-[8rem] pb-[1rem]'>
       <h1 className='heading'>
         Proj<span className='text-yellow-400'>ects</span>
       </h1>
