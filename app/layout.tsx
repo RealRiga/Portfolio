@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { useEffect } from 'react'; // Import useEffect from react
 import './globals.css';
+import Nav from '@/components/Nav';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -46,9 +47,13 @@ export default function RootLayout({
     });
   }, []);
 
+  function openNav(): void {
+    throw new Error('Function not implemented.');
+  }
+
   return (
     <html lang="en">
-      {/* <Nav openNav={openNav}/> */}
+      <Nav openNav={openNav} />
       <body className={inter.className}>{children}</body>
 
     </html>
