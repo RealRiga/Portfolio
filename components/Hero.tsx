@@ -8,7 +8,7 @@ const Hero = () => {
 
     const handleDownload = () => {
         // Provide a link to your resume PDF
-        const resumeUrl = '/resume.pdf';
+        const resumeUrl = '/my_resume.pdf';
         console.log('Download button clicked');
 
         // Create an invisible anchor element
@@ -16,7 +16,7 @@ const Hero = () => {
         link.href = resumeUrl;
 
         // Set the download attribute to specify the file name
-        link.download = 'Yisa_Adeola_Resume.pdf';
+        link.download = 'Yisa_Adeola_My_Resume.pdf';
 
         // Append the anchor element to the document
         document.body.appendChild(link);
