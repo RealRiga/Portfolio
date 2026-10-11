@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://adeolaportfolio.vercel.app',
-    title: 'Adeola Yisa (Riga) | Full-Stack & Mobile Developer',
+    title: 'Adeola Yisa (Only1Riga) | Full-Stack & Mobile Developer',
     description: 'Specializing in building high-performance web applications and fluid cross-platform mobile experiences.',
     siteName: 'Adeola Yisa Portfolio',
     images: [

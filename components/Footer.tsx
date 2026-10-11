@@ -136,7 +136,7 @@ const Footer = () => {
               </a>
 
               <a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/adeola-yisa-1536b4239"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-4 rounded-2xl glass-panel hover:border-brand-cyan/40 transition-all flex items-center gap-3.5 group block shadow-sm"
@@ -301,7 +301,7 @@ const Footer = () => {
             <a href="https://github.com/RealRiga" target="_blank" rel="noopener noreferrer" className="hover:text-brand-emerald transition-colors">
               GitHub
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-brand-emerald transition-colors">
+            <a href="https://www.linkedin.com/in/adeola-yisa-1536b4239" target="_blank" rel="noopener noreferrer" className="hover:text-brand-emerald transition-colors">
               LinkedIn
             </a>
             <a href="https://wa.me/2348106040478" target="_blank" rel="noopener noreferrer" className="hover:text-brand-emerald transition-colors">

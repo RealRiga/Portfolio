@@ -22,31 +22,35 @@ const Skills = () => {
 
   const skillsData: SkillItem[] = [
     // Frontend
-    { name: 'React.js', category: 'frontend', level: 'Expert', icon: '⚛️', description: 'Component architecture, hooks, state management' },
-    { name: 'Next.js (App/Pages)', category: 'frontend', level: 'Expert', icon: '▲', description: 'SSR, SSG, Server Components, API routes, routing' },
-    { name: 'TypeScript', category: 'frontend', level: 'Advanced', icon: 'TS', description: 'Strong typing, interfaces, generics, type safety' },
-    { name: 'JavaScript (ES6+)', category: 'frontend', level: 'Expert', icon: 'JS', description: 'Modern asynchronous JS, closures, DOM manipulation' },
-    { name: 'Tailwind CSS', category: 'frontend', level: 'Expert', icon: '🎨', description: 'Responsive design, custom themes, utility-first UI' },
-    { name: 'HTML5 & CSS3', category: 'frontend', level: 'Expert', icon: '🌐', description: 'Semantic markup, accessibility (a11y), Flexbox, Grid' },
+    { name: 'Next.js (App/Pages)', category: 'frontend', level: 'Expert', icon: '▲', description: 'SSR, SSG, Server Components, API routes, Turborepo monorepos' },
+    { name: 'React.js', category: 'frontend', level: 'Expert', icon: '⚛️', description: 'Component architecture, custom hooks, reactive state patterns' },
+    { name: 'TypeScript', category: 'frontend', level: 'Expert', icon: 'TS', description: 'Strict type safety, generics, interfaces, scalable contracts' },
+    { name: 'JavaScript (ES6+)', category: 'frontend', level: 'Expert', icon: 'JS', description: 'Modern asynchronous JS, event loops, DOM performance' },
+    { name: 'Angular', category: 'frontend', level: 'Advanced', icon: '🅰️', description: 'Enterprise single-page architecture, RxJS, modular dependency injection' },
+    { name: 'Vue.js', category: 'frontend', level: 'Advanced', icon: '💚', description: 'Composition API, Vuex/Pinia, lightweight reactive interfaces' },
+    { name: 'Tailwind CSS', category: 'frontend', level: 'Expert', icon: '🎨', description: 'Design systems, responsive layouts, modern dark/light themes' },
+    { name: 'HTML5 & CSS3', category: 'frontend', level: 'Expert', icon: '🌐', description: 'Semantic markup, accessibility (a11y), Flexbox, CSS Grid' },
 
     // Backend
-    { name: 'C# / .NET', category: 'backend', level: 'Advanced', icon: 'C#', description: 'Backend APIs, object-oriented design, security' },
-    { name: 'Java', category: 'backend', level: 'Advanced', icon: '☕', description: 'Robust backend systems, OOP, data structures' },
-    { name: 'Node.js & Express', category: 'backend', level: 'Advanced', icon: '🟢', description: 'RESTful microservices, asynchronous I/O' },
-    { name: 'RESTful APIs', category: 'backend', level: 'Expert', icon: '🔌', description: 'API contract design, authentication, JSON schemas' },
-    { name: 'PostgreSQL & SQL', category: 'backend', level: 'Proficient', icon: '🐘', description: 'Relational data modeling, indexing, queries' },
-    { name: 'MongoDB', category: 'backend', level: 'Proficient', icon: '🍃', description: 'NoSQL collections, aggregation pipelines' },
+    { name: 'Node.js & Express', category: 'backend', level: 'Expert', icon: '🟢', description: 'RESTful microservices, asynchronous I/O, middleware pipelines' },
+    { name: 'NestJS', category: 'backend', level: 'Advanced', icon: '🦁', description: 'Scalable server-side architecture, decorators, TypeScript backend' },
+    { name: 'Python (Django)', category: 'backend', level: 'Advanced', icon: '🐍', description: 'Robust web backends, ORM data modeling, authentication APIs' },
+    { name: 'C# / .NET', category: 'backend', level: 'Advanced', icon: 'C#', description: 'High-throughput enterprise APIs, OOP design, security' },
+    { name: 'Java', category: 'backend', level: 'Advanced', icon: '☕', description: 'Object-oriented architecture, data structures, enterprise services' },
+    { name: 'Prisma & ORM', category: 'backend', level: 'Advanced', icon: '◬', description: 'Type-safe database client, schema migrations, relations' },
+    { name: 'MySQL & PostgreSQL', category: 'backend', level: 'Advanced', icon: '🐬', description: 'Relational database design, query optimization, indexing' },
+    { name: 'MongoDB', category: 'backend', level: 'Advanced', icon: '🍃', description: 'NoSQL document schemas, aggregation pipelines, collections' },
 
     // Mobile
-    { name: 'Flutter', category: 'mobile', level: 'Advanced', icon: '💙', description: 'Cross-platform native iOS & Android applications' },
-    { name: 'Dart', category: 'mobile', level: 'Advanced', icon: '🎯', description: 'Object-oriented programming, async streams' },
-    { name: 'React Native', category: 'mobile', level: 'Proficient', icon: '📱', description: 'Cross-platform mobile UI with React ecosystem' },
+    { name: 'Flutter (Dart)', category: 'mobile', level: 'Expert', icon: '💙', description: 'Cross-platform native iOS & Android applications published to store' },
+    { name: 'React Native', category: 'mobile', level: 'Advanced', icon: '📱', description: 'Cross-platform mobile UI built with React ecosystem' },
+    { name: 'Google Play Store', category: 'mobile', level: 'Expert', icon: '▶️', description: 'Published and maintained high-performance applications on Google Play Store' },
 
     // Tools & DevOps
-    { name: 'Git & GitHub', category: 'tools', level: 'Expert', icon: '🐙', description: 'Version control, branch workflows, pull requests' },
-    { name: 'Vercel & Netlify', category: 'tools', level: 'Expert', icon: '🚀', description: 'CI/CD deployment, serverless functions, DNS' },
-    { name: 'Postman', category: 'tools', level: 'Advanced', icon: '📮', description: 'API testing, debugging, environment scripting' },
-    { name: 'VS Code & Tooling', category: 'tools', level: 'Expert', icon: '💻', description: 'Modern development workflow, linting, debugging' },
+    { name: 'Git & GitHub', category: 'tools', level: 'Expert', icon: '🐙', description: 'Version control, branch management, CI/CD collaboration' },
+    { name: 'Turborepo (Monorepos)', category: 'tools', level: 'Advanced', icon: '⚡', description: 'Multi-package workspaces, caching, admission architectures' },
+    { name: 'Vercel & Netlify', category: 'tools', level: 'Expert', icon: '🚀', description: 'Production hosting, serverless functions, automated deployments' },
+    { name: 'Postman & APIs', category: 'tools', level: 'Expert', icon: '📮', description: 'Contract design, integration testing, environment mocking' },
   ];
 
   const categories = [
@@ -64,25 +68,32 @@ const Skills = () => {
 
   const careerTimeline = [
     {
-      period: '2023 - Present',
-      role: 'Full-Stack Software Engineer',
-      focus: 'Web & Mobile Applications',
-      desc: 'Architecting scalable web applications using Next.js and React, crafting cross-platform mobile apps with Flutter, and implementing robust backend services in C# and Node.js.',
-      techs: ['Next.js', 'React', 'TypeScript', 'Flutter', 'C#', 'Node.js', 'Tailwind CSS'],
+      period: '06/2025 - Present',
+      role: 'Frontend Developer (Mobile)',
+      focus: 'SmartRob Technologies',
+      desc: 'Driving B2B software development and engineering production mobile applications. Built and published high-performance apps on Google Play Store with top user satisfaction, secure transaction flows, and fluid UX.',
+      techs: ['Flutter', 'Dart', 'React Native', 'Android', 'Play Store Publishing', 'REST APIs'],
     },
     {
-      period: '2023 - Present',
-      role: 'Frontend & UI Specialist',
-      focus: 'Responsive & Interactive Web Systems',
-      desc: 'Developing high-performance user interfaces with clean state management, modern animations, accessibility standards, and SEO optimization for diverse client applications.',
-      techs: ['React', 'Next.js', 'Tailwind CSS', 'HTML5/CSS3', 'REST APIs'],
+      period: '04/2025 - 08/2025',
+      role: 'Frontend Engineer (Monorepo)',
+      focus: 'Eduverse',
+      desc: 'Architected and built a multi-purpose educational admission platform via monorepo architecture powered by Next.js, React, and Turborepo, delivering ultra-fast builds and modular shared packages.',
+      techs: ['Next.js', 'React', 'Turborepo', 'TypeScript', 'Tailwind CSS'],
     },
     {
-      period: '2023 - Present',
-      role: 'Backend & Systems Developer',
-      focus: 'API Design & Enterprise Backend Services',
-      desc: 'Building reliable server-side services with C#, Java, and Node.js. Designing structured databases, authentication workflows, and performant REST API endpoints.',
-      techs: ['C#', 'Java', 'Node.js', 'Express', 'SQL', 'MongoDB'],
+      period: '05/2023 - 01/2024',
+      role: 'Fullstack Developer',
+      focus: 'LetText',
+      desc: 'Completed end-to-end frontend and backend development for a cross-border international communication service, implementing real-time messaging pipelines and secure user authentication.',
+      techs: ['Python (Django)', 'Node.js', 'React', 'Next.js', 'MySQL', 'REST APIs'],
+    },
+    {
+      period: '05/2022 - 05/2023',
+      role: 'Frontend Developer',
+      focus: 'Aptech Computer Institute',
+      desc: 'Created and maintained scalable web applications, student portals, and responsive user interfaces while completing the 2-Year Advance Diploma in Software Engineering (ADSE).',
+      techs: ['HTML5', 'CSS3', 'JavaScript', 'React', 'Angular', 'Git'],
     },
   ];
 

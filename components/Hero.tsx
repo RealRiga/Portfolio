@@ -1,13 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ArrowDownTrayIcon, ChevronDownIcon, CodeBracketIcon } from '@heroicons/react/20/solid';
 import { SparklesIcon, CommandLineIcon, CheckIcon, ClipboardDocumentIcon } from '@heroicons/react/24/outline';
 import Particle from './Particle';
 import TextEffect from './TextEffect';
+import { SiteSettings, defaultSettings } from '@/lib/settings';
 
 const Hero = () => {
   const [copied, setCopied] = useState(false);
+  const [settings, setSettings] = useState<SiteSettings>(defaultSettings);
+
+  useEffect(() => {
+    fetch('/api/settings')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.success && data?.settings) {
+          setSettings(data.settings);
+        }
+      })
+      .catch((err) => console.error('Failed to load settings:', err));
+  }, []);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -65,7 +78,7 @@ const Hero = () => {
 
             {/* Bio summary */}
             <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed mb-6">
-              A results-driven <strong className="text-slate-900 dark:text-white font-semibold">Full-Stack Software Engineer & Mobile Developer</strong> passionate about engineering scalable, elegant, and user-centric digital experiences. Versatile across modern frontend frameworks, cloud-ready APIs, and cross-platform mobile architectures.
+              A versatile <strong className="text-slate-900 dark:text-white font-semibold">Software Engineer & Full-Stack / Mobile Specialist</strong> with <strong className="text-emerald-600 dark:text-brand-emerald font-semibold">5+ years</strong> of hands-on experience engineering scalable web applications, cross-platform mobile apps published on the Play Store, and high-throughput backend services.
             </p>
 
             {/* Primary Social Badges: GitHub, LinkedIn, WhatsApp, Email */}
@@ -87,7 +100,7 @@ const Hero = () => {
 
               {/* LinkedIn */}
               <a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/adeola-yisa-1536b4239"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-dark-900/90 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-white/[0.08] hover:border-brand-cyan hover:text-brand-cyan dark:hover:text-brand-cyan hover:shadow-md transition-all group"
@@ -219,28 +232,41 @@ const Hero = () => {
                     <span className="text-cyan-300">location</span>: <span className="text-emerald-400">&apos;Lagos, Nigeria 🌍&apos;</span>,
                   </div>
                   <div className="pl-4">
-                    <span className="text-cyan-300">experience</span>: <span className="text-emerald-400">&apos;3+ Years Production&apos;</span>,
+                    <span className="text-cyan-300">experience</span>: <span className="text-emerald-400">&apos;5+ Years Production&apos;</span>,
                   </div>
                   <div className="pl-4">
                     <span className="text-cyan-300">specialties</span>: [
                   </div>
-                  <div className="pl-8 text-teal-300">
-                    &apos;Scalable Web Applications&apos;,<br />
-                    &apos;Cross-Platform Mobile (iOS/Android)&apos;,<br />
-                    &apos;Distributed RESTful APIs&apos;
+                  <div className="pl-8 text-teal-300 space-y-0.5">
+                    {/* Admin Toggleable - Commented out / disabled by default per user request */}
+                    {settings.showEnterpriseMonorepos && (
+                      <div>&apos;Enterprise Web Apps &amp; Monorepos (Turborepo)&apos;,</div>
+                    )}
+                    {settings.showPublishedApps && (
+                      <div>&apos;Published Mobile Apps (Billia, Billvault, ZappaPay)&apos;,</div>
+                    )}
+                    {settings.showCrossPlatform && (
+                      <div>&apos;Cross-Platform (Flutter/Dart &amp; React Native)&apos;,</div>
+                    )}
+                    {settings.showBackendMicroservices && (
+                      <div>&apos;Backend Microservices (Django, Node.js, NestJS, C#, Java)&apos;</div>
+                    )}
                   </div>
                   <div className="pl-4">],</div>
                   <div className="pl-4">
                     <span className="text-cyan-300">skills</span>: &#123;
                   </div>
                   <div className="pl-8">
-                    <span className="text-slate-400">frontend:</span> [<span className="text-emerald-400">&apos;Next.js&apos;</span>, <span className="text-emerald-400">&apos;React&apos;</span>, <span className="text-emerald-400">&apos;TypeScript&apos;</span>],
+                    <span className="text-slate-400">frontend:</span> [<span className="text-emerald-400">&apos;Next.js&apos;</span>, <span className="text-emerald-400">&apos;React&apos;</span>, <span className="text-emerald-400">&apos;TypeScript&apos;</span>, <span className="text-emerald-400">&apos;Angular&apos;</span>, <span className="text-emerald-400">&apos;Vue&apos;</span>],
                   </div>
                   <div className="pl-8">
-                    <span className="text-slate-400">mobile:</span> [<span className="text-emerald-400">&apos;Flutter&apos;</span>, <span className="text-emerald-400">&apos;Dart&apos;</span>],
+                    <span className="text-slate-400">mobile:</span> [<span className="text-emerald-400">&apos;Flutter&apos;</span>, <span className="text-emerald-400">&apos;Dart&apos;</span>, <span className="text-emerald-400">&apos;React Native&apos;</span>],
                   </div>
                   <div className="pl-8">
-                    <span className="text-slate-400">backend:</span> [<span className="text-emerald-400">&apos;Node.js&apos;</span>, <span className="text-emerald-400">&apos;C#&apos;</span>, <span className="text-emerald-400">&apos;Java&apos;</span>]
+                    <span className="text-slate-400">backend:</span> [<span className="text-emerald-400">&apos;Node.js&apos;</span>, <span className="text-emerald-400">&apos;NestJS&apos;</span>, <span className="text-emerald-400">&apos;Python/Django&apos;</span>, <span className="text-emerald-400">&apos;C#&apos;</span>, <span className="text-emerald-400">&apos;Java&apos;</span>],
+                  </div>
+                  <div className="pl-8">
+                    <span className="text-slate-400">databases:</span> [<span className="text-emerald-400">&apos;MySQL&apos;</span>, <span className="text-emerald-400">&apos;MongoDB&apos;</span>, <span className="text-emerald-400">&apos;PostgreSQL&apos;</span>, <span className="text-emerald-400">&apos;Prisma&apos;</span>]
                   </div>
                   <div className="pl-4">&#125;,</div>
                   <div className="pl-4">

@@ -16,10 +16,12 @@ import {
   XMarkIcon,
   ShieldCheckIcon,
   MagnifyingGlassIcon,
+  CommandLineIcon,
 } from '@heroicons/react/24/outline';
 import { StarIcon as StarSolidIcon } from '@heroicons/react/20/solid';
 import ThemeToggle from '@/components/ThemeToggle';
 import { Project, defaultProjects } from '@/lib/projects';
+import { SiteSettings, defaultSettings } from '@/lib/settings';
 
 const DEFAULT_PASSCODE = 'riga2026';
 
@@ -51,6 +53,8 @@ export default function AdminPage() {
   const [formTechnologies, setFormTechnologies] = useState('');
   const [formFeatured, setFormFeatured] = useState(false);
 
+  const [settings, setSettings] = useState<SiteSettings>(defaultSettings);
+
   // Check auth session
   useEffect(() => {
     const sessionAuth = sessionStorage.getItem('riga_admin_auth');
@@ -75,11 +79,48 @@ export default function AdminPage() {
     }
   };
 
+  // Fetch settings from API
+  const fetchSettings = async () => {
+    try {
+      const res = await fetch('/api/settings');
+      const data = await res.json();
+      if (data?.success && data?.settings) {
+        setSettings(data.settings);
+      }
+    } catch (err) {
+      console.error('Failed to load settings:', err);
+    }
+  };
+
   useEffect(() => {
     if (isAuthenticated) {
       fetchProjects();
+      fetchSettings();
     }
   }, [isAuthenticated]);
+
+  const handleToggleSetting = async (key: keyof SiteSettings, label: string) => {
+    const updatedValue = !settings[key];
+    setSettings((prev) => ({ ...prev, [key]: updatedValue }));
+    try {
+      const res = await fetch('/api/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ [key]: updatedValue }),
+      });
+      const data = await res.json();
+      if (data?.success && data?.settings) {
+        setSettings(data.settings);
+        triggerStatus(
+          updatedValue
+            ? `Enabled "${label}" on portfolio`
+            : `Disabled / Commented out "${label}"`
+        );
+      }
+    } catch (err) {
+      console.error('Toggle setting error:', err);
+    }
+  };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -484,6 +525,176 @@ export default function AdminPage() {
               >
                 <ArrowPathIcon className="w-3.5 h-3.5" />
                 <span>Reset to Defaults</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Hero Specialties & Highlights Visibility Controls */}
+        <div className="p-6 rounded-2xl bg-white dark:bg-dark-900 border border-slate-200 dark:border-white/[0.08] shadow-sm mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100 dark:border-white/[0.06]">
+            <div>
+              <h2 className="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+                <CommandLineIcon className="w-5 h-5 text-brand-emerald" />
+                <span>Hero Terminal Specialties &amp; Highlights</span>
+              </h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                Toggle display visibility of specialized highlights on your live portfolio.
+              </p>
+            </div>
+            <span className="text-[11px] font-mono text-slate-400">Live synced with /api/settings</span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Item 1 */}
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-dark-950/70 border border-slate-200 dark:border-white/[0.06] flex items-center justify-between gap-4">
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold text-slate-900 dark:text-white">
+                    Enterprise Web Apps &amp; Monorepos (Turborepo)
+                  </span>
+                  {settings.showEnterpriseMonorepos ? (
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                      Visible
+                    </span>
+                  ) : (
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-200 dark:bg-dark-800 text-slate-500 border border-slate-300 dark:border-white/[0.06]">
+                      Hidden / Off
+                    </span>
+                  )}
+                </div>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+                  Controls visibility of the Turborepo monorepo line in the Hero terminal specialties.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() =>
+                  handleToggleSetting('showEnterpriseMonorepos', 'Enterprise Web Apps & Monorepos')
+                }
+                className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                  settings.showEnterpriseMonorepos ? 'bg-brand-emerald' : 'bg-slate-300 dark:bg-dark-800'
+                }`}
+              >
+                <span
+                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                    settings.showEnterpriseMonorepos ? 'translate-x-5' : 'translate-x-0'
+                  }`}
+                />
+              </button>
+            </div>
+
+            {/* Item 2 */}
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-dark-950/70 border border-slate-200 dark:border-white/[0.06] flex items-center justify-between gap-4">
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold text-slate-900 dark:text-white">
+                    Published Mobile Apps (Billia, Billvault, ZappaPay)
+                  </span>
+                  {settings.showPublishedApps ? (
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                      Visible
+                    </span>
+                  ) : (
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-200 dark:bg-dark-800 text-slate-500 border border-slate-300 dark:border-white/[0.06]">
+                      Hidden / Off
+                    </span>
+                  )}
+                </div>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+                  Controls visibility of the published store app names in the Hero terminal specialties.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() =>
+                  handleToggleSetting('showPublishedApps', 'Published Mobile Apps (Billia, Billvault, ZappaPay)')
+                }
+                className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                  settings.showPublishedApps ? 'bg-brand-emerald' : 'bg-slate-300 dark:bg-dark-800'
+                }`}
+              >
+                <span
+                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                    settings.showPublishedApps ? 'translate-x-5' : 'translate-x-0'
+                  }`}
+                />
+              </button>
+            </div>
+
+            {/* Item 3 */}
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-dark-950/70 border border-slate-200 dark:border-white/[0.06] flex items-center justify-between gap-4">
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold text-slate-900 dark:text-white">
+                    Cross-Platform (Flutter/Dart &amp; React Native)
+                  </span>
+                  {settings.showCrossPlatform ? (
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                      Visible
+                    </span>
+                  ) : (
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-200 dark:bg-dark-800 text-slate-500 border border-slate-300 dark:border-white/[0.06]">
+                      Hidden / Off
+                    </span>
+                  )}
+                </div>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+                  Cross-platform mobile engineering highlight.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() =>
+                  handleToggleSetting('showCrossPlatform', 'Cross-Platform Mobile')
+                }
+                className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                  settings.showCrossPlatform ? 'bg-brand-emerald' : 'bg-slate-300 dark:bg-dark-800'
+                }`}
+              >
+                <span
+                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                    settings.showCrossPlatform ? 'translate-x-5' : 'translate-x-0'
+                  }`}
+                />
+              </button>
+            </div>
+
+            {/* Item 4 */}
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-dark-950/70 border border-slate-200 dark:border-white/[0.06] flex items-center justify-between gap-4">
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold text-slate-900 dark:text-white">
+                    Backend Microservices (Django, Node.js, NestJS, C#, Java)
+                  </span>
+                  {settings.showBackendMicroservices ? (
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                      Visible
+                    </span>
+                  ) : (
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-200 dark:bg-dark-800 text-slate-500 border border-slate-300 dark:border-white/[0.06]">
+                      Hidden / Off
+                    </span>
+                  )}
+                </div>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+                  Backend architecture and multi-language services highlight.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() =>
+                  handleToggleSetting('showBackendMicroservices', 'Backend Microservices')
+                }
+                className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                  settings.showBackendMicroservices ? 'bg-brand-emerald' : 'bg-slate-300 dark:bg-dark-800'
+                }`}
+              >
+                <span
+                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                    settings.showBackendMicroservices ? 'translate-x-5' : 'translate-x-0'
+                  }`}
+                />
               </button>
             </div>
           </div>

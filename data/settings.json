@@ -1,0 +1,6 @@
+{
+  "showEnterpriseMonorepos": false,
+  "showPublishedApps": false,
+  "showCrossPlatform": true,
+  "showBackendMicroservices": true
+}

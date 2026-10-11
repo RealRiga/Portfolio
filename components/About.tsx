@@ -38,9 +38,9 @@ const About = () => {
   ];
 
   const quickStats = [
-    { label: 'Role', value: 'Full-Stack & Mobile Engineer' },
+    { label: 'Role', value: 'Software Engineer & Full-Stack / Mobile Specialist' },
     { label: 'Location', value: 'Lagos, Nigeria (Remote Worldwide)' },
-    { label: 'Experience', value: '3+ Years Professional Development' },
+    { label: 'Experience', value: '5+ Years Professional Development' },
     { label: 'Availability', value: 'Available Immediately' },
   ];
 
@@ -147,11 +147,11 @@ const About = () => {
             </h3>
 
             <p className="text-slate-600 dark:text-slate-300 text-base leading-relaxed mb-4">
-              I am a versatile full-stack software engineer with a deep passion for modern web technologies and mobile ecosystems. My journey is defined by a curiosity to understand complex systems and the discipline to turn intricate requirements into clean, scalable applications.
+              I am a versatile software engineer with <strong className="text-slate-900 dark:text-white font-semibold">5+ years of experience</strong> spanning full-stack web engineering, cross-platform mobile app development, and distributed backend architectures. My journey is defined by deep technical curiosity, clean code standards, and the discipline to turn intricate product roadmaps into scalable, high-performance systems.
             </p>
 
             <p className="text-slate-600 dark:text-slate-300 text-base leading-relaxed mb-6">
-              Whether building dynamic reactive web apps with Next.js and TypeScript, crafting performant cross-platform mobile apps with Flutter, or architecting backend services with C#, Java, or Node.js, I bridge the gap between design and technical execution.
+              I specialize across multiple modern ecosystems: architecting enterprise web applications (Next.js, React), engineering high-performance mobile applications on Google Play Store (with Flutter, Dart, &amp; React Native), and engineering robust backend microservices with Node.js, NestJS, Python (Django), C#, and Java.
             </p>
 
             {/* Quick Info Grid */}
@@ -209,7 +209,7 @@ const About = () => {
               </a>
 
               <a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/adeola-yisa-1536b4239"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-5 py-3 rounded-xl font-semibold text-sm text-slate-700 dark:text-slate-200 bg-white hover:bg-slate-100 dark:bg-dark-850 dark:hover:bg-dark-800 border border-slate-200 dark:border-white/[0.08] hover:text-slate-900 dark:hover:text-white transition-colors flex items-center gap-2 shadow-sm"
