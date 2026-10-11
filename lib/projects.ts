@@ -9,6 +9,7 @@ export interface Project {
   githubUrl?: string;
   technologies: string[];
   featured: boolean;
+  visible?: boolean;
 }
 
 export const defaultProjects: Project[] = [

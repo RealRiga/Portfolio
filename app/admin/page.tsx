@@ -17,6 +17,10 @@ import {
   ShieldCheckIcon,
   MagnifyingGlassIcon,
   CommandLineIcon,
+  EyeIcon,
+  EyeSlashIcon,
+  SparklesIcon,
+  Squares2X2Icon,
 } from '@heroicons/react/24/outline';
 import { StarIcon as StarSolidIcon } from '@heroicons/react/20/solid';
 import ThemeToggle from '@/components/ThemeToggle';
@@ -34,6 +38,7 @@ export default function AdminPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [search, setSearch] = useState<string>('');
   const [filterCategory, setFilterCategory] = useState<string>('all');
+  const [filterType, setFilterType] = useState<'all' | 'featured' | 'standard' | 'hidden'>('all');
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -52,6 +57,7 @@ export default function AdminPage() {
   const [formGithubUrl, setFormGithubUrl] = useState('https://github.com/RealRiga');
   const [formTechnologies, setFormTechnologies] = useState('');
   const [formFeatured, setFormFeatured] = useState(false);
+  const [formVisible, setFormVisible] = useState(true);
 
   const [settings, setSettings] = useState<SiteSettings>(defaultSettings);
 
@@ -150,6 +156,7 @@ export default function AdminPage() {
     setFormGithubUrl('https://github.com/RealRiga');
     setFormTechnologies('React, TypeScript, Tailwind CSS');
     setFormFeatured(false);
+    setFormVisible(true);
     setFormError('');
     setIsModalOpen(true);
   };
@@ -165,6 +172,7 @@ export default function AdminPage() {
     setFormGithubUrl(p.githubUrl || 'https://github.com/RealRiga');
     setFormTechnologies(p.technologies.join(', '));
     setFormFeatured(p.featured);
+    setFormVisible(p.visible !== false);
     setFormError('');
     setIsModalOpen(true);
   };
@@ -214,6 +222,7 @@ export default function AdminPage() {
             githubUrl: formGithubUrl.trim(),
             technologies: techArray,
             featured: formFeatured,
+            visible: formVisible,
           }),
         });
         const data = await res.json();
@@ -239,6 +248,7 @@ export default function AdminPage() {
             githubUrl: formGithubUrl.trim(),
             technologies: techArray,
             featured: formFeatured,
+            visible: formVisible,
           }),
         });
         const data = await res.json();
@@ -289,11 +299,57 @@ export default function AdminPage() {
       if (data.success && data.projects) {
         setProjects(data.projects);
         triggerStatus(
-          !p.featured ? `Marked "${p.title}" as Featured` : `Removed "${p.title}" from Featured`
+          !p.featured ? `Marked "${p.title}" as Featured Work` : `Changed "${p.title}" to Standard Content`
         );
       }
     } catch (err) {
       console.error('Toggle error:', err);
+    }
+  };
+
+  const handleToggleVisibility = async (p: Project) => {
+    const newVisible = p.visible === false ? true : false;
+    try {
+      const res = await fetch('/api/projects', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: p.id,
+          visible: newVisible,
+        }),
+      });
+      const data = await res.json();
+      if (data.success && data.projects) {
+        setProjects(data.projects);
+        triggerStatus(
+          newVisible
+            ? `Published "${p.title}" to live portfolio`
+            : `Hidden "${p.title}" from public site`
+        );
+      }
+    } catch (err) {
+      console.error('Toggle visibility error:', err);
+    }
+  };
+
+  const handleTogglePortfolioProjectView = async (mode: 'all' | 'featured_only') => {
+    try {
+      const res = await fetch('/api/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ portfolioProjectView: mode }),
+      });
+      const data = await res.json();
+      if (data?.success && data?.settings) {
+        setSettings(data.settings);
+        triggerStatus(
+          mode === 'featured_only'
+            ? 'Public portfolio set to display Featured Work by default'
+            : 'Public portfolio set to display All Projects by default'
+        );
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -328,12 +384,17 @@ export default function AdminPage() {
 
   const filteredProjects = projects.filter((p) => {
     const matchesCategory = filterCategory === 'all' || p.category === filterCategory;
+    const matchesType =
+      filterType === 'all' ||
+      (filterType === 'featured' && p.featured) ||
+      (filterType === 'standard' && !p.featured) ||
+      (filterType === 'hidden' && p.visible === false);
     const matchesSearch =
       search === '' ||
       p.title.toLowerCase().includes(search.toLowerCase()) ||
       p.description.toLowerCase().includes(search.toLowerCase()) ||
       p.technologies.some((t) => t.toLowerCase().includes(search.toLowerCase()));
-    return matchesCategory && matchesSearch;
+    return matchesCategory && matchesType && matchesSearch;
   });
 
   const totalProjects = projects.length;
@@ -474,7 +535,7 @@ export default function AdminPage() {
               {totalProjects}
             </div>
             <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium mt-1">
-              Live on portfolio
+              {projects.filter((p) => p.visible !== false).length} published on portfolio
             </div>
           </div>
 
@@ -487,46 +548,117 @@ export default function AdminPage() {
               <StarSolidIcon className="w-6 h-6 text-amber-400" />
             </div>
             <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
-              Highlighted with glowing badges
+              Spotlight priority on homepage
             </div>
           </div>
 
           <div className="p-5 rounded-2xl bg-white dark:bg-dark-900 border border-slate-200 dark:border-white/[0.08] shadow-sm">
             <div className="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider">
-              Categories
+              Standard Content
             </div>
-            <div className="text-sm font-semibold text-slate-700 dark:text-slate-300 mt-2 space-y-1">
-              <div className="flex justify-between">
-                <span>Web Apps:</span>
-                <span className="font-bold">{projects.filter((p) => p.category === 'web').length}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Mobile Apps:</span>
-                <span className="font-bold">{projects.filter((p) => p.category === 'mobile').length}</span>
-              </div>
+            <div className="text-3xl font-extrabold text-slate-700 dark:text-slate-300 mt-1">
+              {projects.filter((p) => !p.featured).length}
+            </div>
+            <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+              General catalog projects
             </div>
           </div>
 
           <div className="p-5 rounded-2xl bg-white dark:bg-dark-900 border border-slate-200 dark:border-white/[0.08] shadow-sm">
             <div className="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider">
-              Quick Controls
+              Public Default View
             </div>
-            <div className="flex flex-col gap-2 mt-2">
+            <div className="text-sm font-bold text-slate-900 dark:text-white mt-2 flex items-center gap-1.5">
+              {settings.portfolioProjectView === 'featured_only' ? (
+                <span className="text-amber-500 flex items-center gap-1">
+                  <StarSolidIcon className="w-4 h-4" /> Featured Only
+                </span>
+              ) : (
+                <span className="text-emerald-500 flex items-center gap-1">
+                  <CheckIcon className="w-4 h-4" /> All Projects
+                </span>
+              )}
+            </div>
+            <div className="flex flex-col gap-1.5 mt-2">
               <button
                 onClick={openAddModal}
-                className="w-full py-2 px-3 rounded-xl font-bold text-xs text-dark-950 bg-gradient-to-r from-brand-emerald to-brand-cyan hover:opacity-95 shadow-sm transition-all flex items-center justify-center gap-1.5"
+                className="w-full py-1.5 px-2 rounded-lg font-bold text-[11px] text-dark-950 bg-gradient-to-r from-brand-emerald to-brand-cyan hover:opacity-95 shadow-sm transition-all flex items-center justify-center gap-1"
               >
-                <PlusIcon className="w-4 h-4" />
+                <PlusIcon className="w-3.5 h-3.5" />
                 <span>Add Project</span>
               </button>
               <button
                 onClick={handleResetDefaults}
-                className="w-full py-1.5 px-3 rounded-xl font-medium text-[11px] text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-slate-100 hover:bg-slate-200 dark:bg-dark-800 dark:hover:bg-dark-750 transition-colors flex items-center justify-center gap-1"
+                className="w-full py-1 px-2 rounded-lg font-medium text-[10px] text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-dark-800 transition-colors flex items-center justify-center gap-1"
               >
-                <ArrowPathIcon className="w-3.5 h-3.5" />
-                <span>Reset to Defaults</span>
+                <ArrowPathIcon className="w-3 h-3" />
+                <span>Reset Defaults</span>
               </button>
             </div>
+          </div>
+        </div>
+
+        {/* Public Portfolio Display Mode Switcher Card */}
+        <div className="p-6 rounded-2xl bg-white dark:bg-dark-900 border border-slate-200 dark:border-white/[0.08] shadow-sm mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100 dark:border-white/[0.06]">
+            <div>
+              <div className="flex items-center gap-2">
+                <SparklesIcon className="w-5 h-5 text-amber-500" />
+                <h2 className="font-bold text-base text-slate-900 dark:text-white font-heading">
+                  Public Portfolio Display Mode
+                </h2>
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                Toggle whether visitors landing on your website initially see only your curated Featured Work or your full project catalog.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-dark-950 p-1 rounded-xl border border-slate-200 dark:border-white/[0.08]">
+              <button
+                type="button"
+                onClick={() => handleTogglePortfolioProjectView('featured_only')}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  settings.portfolioProjectView === 'featured_only'
+                    ? 'bg-amber-400 text-dark-950 shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                <StarSolidIcon className="w-3.5 h-3.5" />
+                <span>Featured Work ({featuredCount})</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleTogglePortfolioProjectView('all')}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  settings.portfolioProjectView === 'all'
+                    ? 'bg-brand-emerald text-dark-950 shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                <Squares2X2Icon className="w-3.5 h-3.5" />
+                <span>All Projects ({totalProjects})</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-600 dark:text-slate-300">
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-slate-900 dark:text-white">Active Homepage Mode:</span>
+              {settings.portfolioProjectView === 'featured_only' ? (
+                <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/25 flex items-center gap-1">
+                  <StarSolidIcon className="w-3 h-3 text-amber-500" />
+                  Visitors see your {featuredCount} Featured Work items first
+                </span>
+              ) : (
+                <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25 flex items-center gap-1">
+                  <CheckIcon className="w-3 h-3 text-emerald-500" />
+                  Visitors see your full project catalog first
+                </span>
+              )}
+            </div>
+            <span className="text-[11px] text-slate-400 font-mono">
+              (Visitors can still toggle between tabs on the live site)
+            </span>
           </div>
         </div>
 
@@ -701,30 +833,82 @@ export default function AdminPage() {
         </div>
 
         {/* Filter and Search Bar */}
-        <div className="p-4 rounded-2xl bg-white dark:bg-dark-900 border border-slate-200 dark:border-white/[0.08] shadow-sm mb-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="relative w-full md:w-80">
-            <MagnifyingGlassIcon className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by title, tech or tag..."
-              className="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-50 dark:bg-dark-950 border border-slate-200 dark:border-white/[0.08] text-xs focus:outline-none focus:border-brand-emerald transition-colors"
-            />
+        <div className="p-4 rounded-2xl bg-white dark:bg-dark-900 border border-slate-200 dark:border-white/[0.08] shadow-sm mb-6 space-y-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="relative w-full md:w-80">
+              <MagnifyingGlassIcon className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search by title, tech or tag..."
+                className="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-50 dark:bg-dark-950 border border-slate-200 dark:border-white/[0.08] text-xs focus:outline-none focus:border-brand-emerald transition-colors"
+              />
+            </div>
+
+            {/* Quick Content View Filter */}
+            <div className="flex flex-wrap items-center gap-1.5 w-full md:w-auto">
+              <button
+                onClick={() => setFilterType('all')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                  filterType === 'all'
+                    ? 'bg-slate-900 text-white dark:bg-white dark:text-dark-950 font-bold shadow-sm'
+                    : 'bg-slate-100 dark:bg-dark-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                All Projects ({projects.length})
+              </button>
+              <button
+                onClick={() => setFilterType('featured')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1 transition-all ${
+                  filterType === 'featured'
+                    ? 'bg-amber-400 text-dark-950 font-bold shadow-sm'
+                    : 'bg-slate-100 dark:bg-dark-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                <StarSolidIcon className="w-3.5 h-3.5 text-amber-500" />
+                <span>Featured Work ({featuredCount})</span>
+              </button>
+              <button
+                onClick={() => setFilterType('standard')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                  filterType === 'standard'
+                    ? 'bg-brand-emerald text-dark-950 font-bold shadow-sm'
+                    : 'bg-slate-100 dark:bg-dark-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                Standard Content ({projects.filter((p) => !p.featured).length})
+              </button>
+              <button
+                onClick={() => setFilterType('hidden')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1 transition-all ${
+                  filterType === 'hidden'
+                    ? 'bg-rose-500 text-white font-bold shadow-sm'
+                    : 'bg-slate-100 dark:bg-dark-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                <EyeSlashIcon className="w-3.5 h-3.5" />
+                <span>Hidden ({projects.filter((p) => p.visible === false).length})</span>
+              </button>
+            </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+          {/* Category Chips */}
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100 dark:border-white/[0.04]">
+            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mr-1">
+              Category:
+            </span>
             {(['all', 'web', 'mobile', 'ecommerce', 'fullstack'] as const).map((cat) => (
               <button
                 key={cat}
                 onClick={() => setFilterCategory(cat)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-semibold capitalize transition-all ${
+                className={`px-2.5 py-1 rounded-lg text-xs font-medium capitalize transition-all ${
                   filterCategory === cat
-                    ? 'bg-brand-emerald text-dark-950 shadow-sm'
-                    : 'bg-slate-100 dark:bg-dark-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                    ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 font-bold'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
-                {cat === 'all' ? 'All Items' : cat}
+                {cat === 'all' ? 'All Categories' : cat}
               </button>
             ))}
           </div>
@@ -764,23 +948,28 @@ export default function AdminPage() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-                    {/* Category pill */}
-                    <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/90 dark:bg-dark-950/90 text-slate-900 dark:text-white backdrop-blur-md border border-white/20">
-                      {p.categoryLabel || p.category}
-                    </span>
-
-                    {/* Toggle Featured Star */}
-                    <button
-                      onClick={() => handleToggleFeatured(p)}
-                      title={p.featured ? 'Remove from Featured' : 'Mark as Featured'}
-                      className="absolute top-3 right-3 p-1.5 rounded-full bg-white/90 dark:bg-dark-950/90 text-slate-700 dark:text-slate-200 hover:text-amber-500 dark:hover:text-amber-400 backdrop-blur-md shadow-sm transition-colors"
-                    >
+                    {/* Top Badges: Category, Featured, Visibility */}
+                    <div className="absolute top-3 left-3 flex flex-wrap items-center gap-1.5">
+                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/90 dark:bg-dark-950/90 text-slate-900 dark:text-white backdrop-blur-md border border-white/20">
+                        {p.categoryLabel || p.category}
+                      </span>
                       {p.featured ? (
-                        <StarSolidIcon className="w-5 h-5 text-amber-400" />
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-400 text-dark-950 shadow-sm flex items-center gap-1">
+                          <StarSolidIcon className="w-3 h-3 text-dark-950" />
+                          <span>Featured</span>
+                        </span>
                       ) : (
-                        <StarIcon className="w-5 h-5 text-slate-400" />
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-slate-800/80 text-slate-300 border border-white/10">
+                          Standard
+                        </span>
                       )}
-                    </button>
+                      {p.visible === false && (
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/90 text-white shadow-sm flex items-center gap-1">
+                          <EyeSlashIcon className="w-3 h-3" />
+                          <span>Hidden</span>
+                        </span>
+                      )}
+                    </div>
 
                     <div className="absolute bottom-3 left-3 right-3">
                       <h3 className="text-white font-bold text-sm line-clamp-1 font-heading">
@@ -840,23 +1029,55 @@ export default function AdminPage() {
                   </div>
                 </div>
 
-                {/* Card Action Footer */}
-                <div className="p-4 bg-slate-50 dark:bg-dark-950/60 border-t border-slate-200 dark:border-white/[0.06] flex items-center justify-between">
-                  <div className="text-[11px] text-slate-500 dark:text-slate-400">
-                    {p.featured ? (
-                      <span className="text-amber-500 font-semibold flex items-center gap-1">
-                        <StarSolidIcon className="w-3.5 h-3.5" /> Featured
-                      </span>
-                    ) : (
-                      <span>Standard Project</span>
-                    )}
+                {/* Card Action Footer with 1-click toggles */}
+                <div className="p-3.5 bg-slate-50 dark:bg-dark-950/60 border-t border-slate-200 dark:border-white/[0.06] flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5">
+                    {/* Toggle Featured Button */}
+                    <button
+                      onClick={() => handleToggleFeatured(p)}
+                      title={p.featured ? 'Demote to Standard Content' : 'Promote to Featured Work'}
+                      className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold flex items-center gap-1 border transition-all ${
+                        p.featured
+                          ? 'bg-amber-400/15 border-amber-400/30 text-amber-700 dark:text-amber-400 hover:bg-amber-400/25'
+                          : 'bg-white dark:bg-dark-800 border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:text-amber-500'
+                      }`}
+                    >
+                      {p.featured ? (
+                        <>
+                          <StarSolidIcon className="w-3.5 h-3.5 text-amber-500" />
+                          <span>Featured</span>
+                        </>
+                      ) : (
+                        <>
+                          <StarIcon className="w-3.5 h-3.5" />
+                          <span>Make Featured</span>
+                        </>
+                      )}
+                    </button>
+
+                    {/* Toggle Visibility Button */}
+                    <button
+                      onClick={() => handleToggleVisibility(p)}
+                      title={p.visible === false ? 'Publish to Public Site' : 'Hide from Public Site'}
+                      className={`p-1 rounded-lg border transition-all ${
+                        p.visible === false
+                          ? 'bg-rose-500/10 border-rose-500/25 text-rose-600 dark:text-rose-400 hover:bg-rose-500/20'
+                          : 'bg-white dark:bg-dark-800 border-slate-200 dark:border-white/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10'
+                      }`}
+                    >
+                      {p.visible === false ? (
+                        <EyeSlashIcon className="w-4 h-4" />
+                      ) : (
+                        <EyeIcon className="w-4 h-4" />
+                      )}
+                    </button>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1">
                     <button
                       onClick={() => openEditModal(p)}
                       className="p-1.5 rounded-lg bg-white dark:bg-dark-800 border border-slate-200 dark:border-white/[0.08] text-slate-700 dark:text-slate-300 hover:text-brand-emerald transition-colors"
-                      title="Edit project"
+                      title="Edit project details"
                     >
                       <PencilSquareIcon className="w-4 h-4" />
                     </button>
@@ -1053,20 +1274,39 @@ export default function AdminPage() {
                 />
               </div>
 
-              <div className="flex items-center gap-3 pt-2">
-                <input
-                  type="checkbox"
-                  id="featuredToggle"
-                  checked={formFeatured}
-                  onChange={(e) => setFormFeatured(e.target.checked)}
-                  className="w-4 h-4 rounded text-brand-emerald focus:ring-brand-emerald"
-                />
-                <label
-                  htmlFor="featuredToggle"
-                  className="text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer"
-                >
-                  Feature this project prominently on the portfolio
-                </label>
+              <div className="space-y-2.5 pt-2">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="featuredToggle"
+                    checked={formFeatured}
+                    onChange={(e) => setFormFeatured(e.target.checked)}
+                    className="w-4 h-4 rounded text-brand-emerald focus:ring-brand-emerald"
+                  />
+                  <label
+                    htmlFor="featuredToggle"
+                    className="text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer flex items-center gap-1"
+                  >
+                    <span>Feature this project in the spotlight</span>
+                    <span className="text-amber-500 font-bold">(Featured Work)</span>
+                  </label>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="visibleToggle"
+                    checked={formVisible}
+                    onChange={(e) => setFormVisible(e.target.checked)}
+                    className="w-4 h-4 rounded text-brand-emerald focus:ring-brand-emerald"
+                  />
+                  <label
+                    htmlFor="visibleToggle"
+                    className="text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer"
+                  >
+                    Visible on live portfolio (uncheck to save as hidden draft)
+                  </label>
+                </div>
               </div>
 
               <div className="flex items-center justify-end gap-3 pt-6 border-t border-slate-200 dark:border-white/[0.08]">

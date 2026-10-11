@@ -46,6 +46,7 @@ export async function POST(request: Request) {
         ? body.technologies.split(',').map((t: string) => t.trim()).filter(Boolean)
         : [],
       featured: Boolean(body.featured),
+      visible: body.visible !== undefined ? Boolean(body.visible) : true,
     };
 
     const currentProjects = getProjects();
