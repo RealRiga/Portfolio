@@ -1,92 +1,114 @@
-import { XMarkIcon } from '@heroicons/react/16/solid';
-import { useState } from 'react';
+'use client';
+
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import { ArrowDownTrayIcon, SparklesIcon } from '@heroicons/react/20/solid';
+import ThemeToggle from './ThemeToggle';
 
 interface Props {
-    nav: boolean;
-    closeNav: () => void;
-    scrollToSection: (sectionId: string) => void;
+  nav: boolean;
+  closeNav: () => void;
+  scrollToSection: (sectionId: string) => void;
 }
 
 const MobileNav = ({ nav, closeNav, scrollToSection }: Props) => {
-    const [activeLink, setActiveLink] = useState('');
+  const navItems = [
+    { id: 'home', label: 'Home' },
+    { id: 'about', label: 'About Me' },
+    { id: 'skills', label: 'Skills & Tech' },
+    { id: 'services', label: 'Services' },
+    { id: 'project', label: 'Projects' },
+    { id: 'testimonial', label: 'Testimonials' },
+    { id: 'contact', label: 'Contact' },
+  ];
 
-    const handleLinkClick = (sectionId: string) => {
-        const element = document.getElementById(sectionId);
+  const handleLinkClick = (sectionId: string) => {
+    scrollToSection(sectionId);
+    closeNav();
+  };
 
-        if (element) {
-            // Adjust the offset based on the section
-            let offset = 0;
-            if (sectionId == 'home' || sectionId === 'skills' || sectionId === 'project') {
-                offset = -50; // Adjust this value as needed
-            } else if (sectionId === 'testimonial' || sectionId == 'services') {
-                offset = -20; // Adjust this value as needed
-            } else if (sectionId === 'contact') {
-                offset = -20; // Adjust this value as needed
-            }
+  return (
+    <>
+      {/* Backdrop overlay */}
+      <div
+        onClick={closeNav}
+        className={`fixed inset-0 z-50 bg-black/60 dark:bg-black/75 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${
+          nav ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+      />
 
-            window.scrollTo({
-                top: element.offsetTop + offset,
-                behavior: 'smooth',
-            });
-        }
-        setActiveLink(sectionId);
-        closeNav();
-    };
-
-    return (
-        <div className={`fixed transform transition-all duration-300 top- left-0 right-0 bottom-0 z-[1000000] bg-[#09101a] ${nav ? 'translate-x-0' : 'translate-x-[-100%]'}`}>
-            <div className='w-[100vw] h-[100vh] flex flex-col items-center justify-center'>
-                <div
-                    onClick={() => handleLinkClick('home')}
-                    className={`nav-link-mobile ${activeLink === 'home' ? 'active' : ''}`}
-                >
-                    Home
+      {/* Drawer */}
+      <div
+        className={`fixed top-0 right-0 bottom-0 z-50 w-[85%] max-w-sm bg-white dark:bg-dark-900 border-l border-slate-200 dark:border-white/[0.08] shadow-2xl p-6 flex flex-col justify-between transition-transform duration-300 ease-out lg:hidden ${
+          nav ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        <div>
+          {/* Header */}
+          <div className="flex items-center justify-between pb-6 border-b border-slate-200 dark:border-white/[0.08]">
+            <div className="flex items-center gap-2">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-emerald to-brand-cyan p-[1px]">
+                <div className="w-full h-full bg-white dark:bg-dark-950 rounded-[11px] flex items-center justify-center">
+                  <span className="font-extrabold text-base text-slate-900 dark:text-white">
+                    R<span className="text-brand-emerald">.</span>
+                  </span>
                 </div>
-                <div
-                    onClick={() => handleLinkClick('about')}
-                    className={`nav-link-mobile ${activeLink === 'about' ? 'active' : ''}`}
-                >
-                    About
-                </div>
-                <div
-                    onClick={() => handleLinkClick('skills')}
-                    className={`nav-link-mobile ${activeLink === 'skills' ? 'active' : ''}`}
-                >
-                    Skills
-                </div>
-                <div
-                    onClick={() => handleLinkClick('services')}
-                    className={`nav-link-mobile ${activeLink === 'services' ? 'active' : ''}`}
-                >
-                    Services
-                </div>
-                <div
-                    onClick={() => handleLinkClick('project')}
-                    className={`nav-link-mobile ${activeLink === 'project' ? 'active' : ''}`}
-                >
-                    Project
-                </div>
-                <div
-                    onClick={() => handleLinkClick('testimonial')}
-                    className={`nav-link-mobile ${activeLink === 'testimonial' ? 'active' : ''}`}
-                >
-                    Testimonial
-                </div>
-                <div
-                    onClick={() => handleLinkClick('contact')}
-                    className={`nav-link-mobile ${activeLink === 'contact' ? 'active' : ''}`}
-                >
-                    Contact
-                </div>
+              </div>
+              <span className="font-bold text-lg text-slate-900 dark:text-white font-heading">
+                Adeola Yisa
+              </span>
             </div>
-            <div
+
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <button
                 onClick={closeNav}
-                className='absolute z-[100000000] cursor-pointer top-[2rem] right-[2rem] w-[2rem] h-[2rem] text-yellow-400'
-            >
-                <XMarkIcon />
+                className="p-2 rounded-xl bg-slate-100 dark:bg-dark-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+                aria-label="Close menu"
+              >
+                <XMarkIcon className="w-5 h-5" />
+              </button>
             </div>
+          </div>
+
+          {/* Links list */}
+          <nav className="mt-6 flex flex-col space-y-1">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleLinkClick(item.id)}
+                className="w-full text-left px-4 py-3 rounded-xl text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-dark-800/70 font-medium transition-colors flex items-center justify-between group"
+              >
+                <span>{item.label}</span>
+                <span className="text-brand-emerald opacity-0 group-hover:opacity-100 transition-opacity">
+                  →
+                </span>
+              </button>
+            ))}
+          </nav>
         </div>
-    );
+
+        {/* Action Buttons */}
+        <div className="pt-6 border-t border-slate-200 dark:border-white/[0.08] space-y-3">
+          <a
+            href="/my_resume.pdf"
+            download="Yisa_Adeola_Resume.pdf"
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 dark:text-white bg-slate-100 dark:bg-dark-800 hover:bg-slate-200 dark:hover:bg-dark-700 border border-slate-200 dark:border-white/[0.08] transition-colors"
+          >
+            <ArrowDownTrayIcon className="w-4 h-4 text-brand-emerald" />
+            <span>Download Resume</span>
+          </a>
+
+          <button
+            onClick={() => handleLinkClick('contact')}
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold text-dark-950 bg-gradient-to-r from-brand-emerald to-brand-teal hover:opacity-95 shadow-lg shadow-brand-emerald/20 transition-all"
+          >
+            <SparklesIcon className="w-4 h-4 text-dark-950" />
+            <span>Get in Touch</span>
+          </button>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default MobileNav;

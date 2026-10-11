@@ -1,3 +1,4 @@
+import React from 'react';
 
 interface Props {
   title: string;
@@ -7,18 +8,18 @@ interface Props {
 
 const SkillsItems = ({ title, year, text }: Props) => {
   return (
-    <div className='mb-[4rem] md:mb-[8rem]'>
-      <span className='px-[2rem] text-[#55e6a5] py-[0.9rem] font-bold text-[18px] border-[2px] border-[#55e6a5]'>
+    <div className="p-6 rounded-2xl glass-panel border border-white/[0.08] hover:border-brand-emerald/40 transition-colors mb-6">
+      <div className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-brand-emerald border border-emerald-500/20 mb-3">
         {year}
-      </span>
-      <h1 className='mt-[2rem] uppercase font-semibold mb-[1rem] text-[20px] sm:text-[25px] md:text-[30px] text-white'>
+      </div>
+      <h3 className="text-xl font-bold text-white font-heading mb-2">
         {title}
-      </h1>
-      <p className="text-[#aaaaaa] font-normal w-[80%] text-[17px] opacity-80">
+      </h3>
+      <p className="text-sm text-slate-300 leading-relaxed">
         {text}
       </p>
     </div>
-  )
-}
+  );
+};
 
-export default SkillsItems
+export default SkillsItems;

@@ -1,125 +1,167 @@
-import { Bars3Icon } from '@heroicons/react/16/solid';
+'use client';
+
+import { Bars3Icon } from '@heroicons/react/24/outline';
+import { ArrowDownTrayIcon, SparklesIcon } from '@heroicons/react/20/solid';
 import { useEffect, useState } from 'react';
+import ThemeToggle from './ThemeToggle';
 
 interface Props {
-    openNav: () => void;
+  openNav: () => void;
 }
 
 const Nav = ({ openNav }: Props) => {
-    const [activeLink, setActiveLink] = useState('Home');
+  const [activeLink, setActiveLink] = useState('Home');
+  const [scrolled, setScrolled] = useState(false);
 
-    const scrollToSection = (sectionId: string) => {
-        const element = document.getElementById(sectionId);
-        // const [mobileNavOpen, setMobileNavOpen] = useState(false);
-        if (element) {
-            if (sectionId === 'home') {
-                // For the "Home" section, scroll to the top
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth',
-                });
-            } else {
-                // For other sections, scroll to the section with the default behavior
-                window.scrollTo({
-                    top: element.offsetTop,
-                    behavior: 'smooth',
-                });
-            }
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const navHeight = 80;
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+      const offsetPosition = elementPosition - (sectionId === 'home' ? 0 : navHeight);
+
+      window.scrollTo({
+        top: sectionId === 'home' ? 0 : offsetPosition,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+
+      const sections = [
+        { id: 'home', label: 'Home' },
+        { id: 'about', label: 'About' },
+        { id: 'skills', label: 'Skills' },
+        { id: 'services', label: 'Services' },
+        { id: 'project', label: 'Projects' },
+        { id: 'testimonial', label: 'Testimonials' },
+        { id: 'contact', label: 'Contact' },
+      ];
+
+      const scrollPosition = window.scrollY + 200;
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i];
+        const element = document.getElementById(section.id);
+        if (element && scrollPosition >= element.offsetTop) {
+          setActiveLink(section.label);
+          break;
         }
+      }
     };
 
-    useEffect(() => {
-        let timeoutId: NodeJS.Timeout | null = null;
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-        const handleScroll = () => {
-            const sections = [
-                { id: 'home', label: 'Home' },
-                { id: 'about', label: 'About' },
-                { id: 'skills', label: 'Skills' },
-                { id: 'services', label: 'Services' },
-                { id: 'project', label: 'Projects' },
-                { id: 'testimonial', label: 'Testimonial' },
-                { id: 'contact', label: 'Contact' },
-            ];
+  const navItems = [
+    { id: 'home', label: 'Home' },
+    { id: 'about', label: 'About' },
+    { id: 'skills', label: 'Skills' },
+    { id: 'services', label: 'Services' },
+    { id: 'project', label: 'Projects' },
+    { id: 'testimonial', label: 'Testimonials' },
+    { id: 'contact', label: 'Contact' },
+  ];
 
-            clearTimeout(timeoutId!);
-
-            timeoutId = setTimeout(() => {
-                const scrollPosition = window.scrollY + window.innerHeight / 2;
-                let activeSection = 'Home';
-
-                sections.forEach((section) => {
-                    const element = document.getElementById(section.id);
-                    if (element && scrollPosition >= element.offsetTop) {
-                        activeSection = section.label;
-                    }
-                });
-
-                setActiveLink(activeSection);
-            }, 50); // Adjust the delay duration as needed
-        };
-
-        // Attach the scroll event listener
-        window.addEventListener('scroll', handleScroll);
-
-        // Detach the event listener on component unmount
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-            if (timeoutId) clearTimeout(timeoutId);
-        };
-    }, []);
-
-    return (
-        <div className='w-[100%] fixed z-[10000] top-0 h-[12vh] bg-[#141c27] shadow-md'>
-            <div className='flex items-center justify-between w-[80%] mx-auto h-[100%]'>
-                <h1 onClick={() => {
-                    scrollToSection('home');
-                    setActiveLink('Home');
-                }} className='flex-[0.6] cursor-pointer text-[25px] text-white font-bold'>
-                    Ri
-                    <span className='text-yellow-300'>ga</span>
-                </h1>
-                <div onClick={() => {
-                    scrollToSection('home');
-                    setActiveLink('Home');
-                }} className={`nav-link ${activeLink === 'Home' ? 'active' : ''} transition-all ease-in-out duration-300`}>Home</div>
-
-                <div onClick={() => {
-                    scrollToSection('about');
-                    setActiveLink('About');
-                }} className={`nav-link ${activeLink === 'About' ? 'active' : ''} transition-all ease-in-out duration-300`}>About Me</div>
-
-                <div onClick={() => {
-                    scrollToSection('skills');
-                    setActiveLink('Skills');
-                }} className={`nav-link ${activeLink === 'Skills' ? 'active' : ''} transition-all ease-in-out duration-300`}>Skills</div>
-
-                <div onClick={() => {
-                    scrollToSection('services');
-                    setActiveLink('Services');
-                }} className={`nav-link ${activeLink === 'Services' ? 'active' : ''} transition-all ease-in-out duration-300`}>Services</div>
-
-                <div onClick={() => {
-                    scrollToSection('project');
-                    setActiveLink('Projects');
-                }} className={`nav-link ${activeLink === 'Projects' ? 'active' : ''} transition-all ease-in-out duration-300`}>Projects</div>
-
-                <div onClick={() => {
-                    scrollToSection('testimonial');
-                    setActiveLink('Testimonial');
-                }} className={`nav-link ${activeLink === 'Testimonial' ? 'active' : ''} transition-all ease-in-out duration-300`}>Testimonial</div>
-
-                <div onClick={() => {
-                    scrollToSection('contact');
-                    setActiveLink('Contact');
-                }} className={`nav-link ${activeLink === 'Contact' ? 'active' : ''} transition-all ease-in-out duration-300`}>Contact</div>
-
-                <div onClick={openNav}>
-                    <Bars3Icon className='w-[2rem] md:hidden h-[2rem] cursor-pointer text-yellow-300' />
-                </div>
+  return (
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? 'bg-white/90 dark:bg-dark-950/85 backdrop-blur-md border-b border-slate-200/80 dark:border-white/[0.08] shadow-sm dark:shadow-lg dark:shadow-black/20 py-3.5'
+          : 'bg-transparent py-5'
+      }`}
+    >
+      <div className="w-[90%] max-w-7xl mx-auto flex items-center justify-between">
+        {/* Brand Logo */}
+        <button
+          onClick={() => {
+            scrollToSection('home');
+            setActiveLink('Home');
+          }}
+          className="flex items-center gap-2 group text-left focus:outline-none"
+          aria-label="Scroll to top"
+        >
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-emerald to-brand-cyan p-[1px] transition-transform duration-300 group-hover:scale-105">
+            <div className="w-full h-full bg-white dark:bg-dark-950 rounded-[11px] flex items-center justify-center shadow-sm">
+              <span className="font-extrabold text-lg text-slate-900 dark:text-white font-heading">
+                R<span className="text-brand-emerald">.</span>
+              </span>
             </div>
+          </div>
+          <div>
+            <div className="font-bold text-xl tracking-tight text-slate-900 dark:text-white flex items-center gap-1 font-heading">
+              <span>Adeola</span>
+              <span className="text-brand-emerald">Yisa</span>
+            </div>
+            <div className="text-[11px] font-medium text-slate-500 dark:text-slate-400 tracking-wider uppercase -mt-0.5 flex items-center gap-1.5">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              Full-Stack & Mobile
+            </div>
+          </div>
+        </button>
+
+        {/* Desktop Navigation Links */}
+        <nav className="hidden lg:flex items-center gap-8 bg-slate-100/80 dark:bg-dark-900/60 border border-slate-200/80 dark:border-white/[0.06] backdrop-blur-md px-6 py-2 rounded-full">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => {
+                scrollToSection(item.id);
+                setActiveLink(item.label);
+              }}
+              className={`nav-link text-sm transition-colors ${
+                activeLink === item.label
+                  ? 'active text-brand-emerald font-semibold'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              {item.label}
+            </button>
+          ))}
+        </nav>
+
+        {/* Right Action CTA & Theme Toggle */}
+        <div className="hidden sm:flex items-center gap-3">
+          {/* Theme Toggle Button */}
+          <ThemeToggle />
+
+          <a
+            href="/my_resume.pdf"
+            download="Yisa_Adeola_Resume.pdf"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 hover:bg-slate-200 dark:bg-dark-850 dark:hover:bg-dark-800 border border-slate-200 dark:border-white/[0.08] transition-all duration-200 shadow-sm"
+          >
+            <ArrowDownTrayIcon className="w-4 h-4 text-brand-emerald" />
+            <span>Resume</span>
+          </a>
+
+          <button
+            onClick={() => scrollToSection('contact')}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-dark-950 bg-gradient-to-r from-brand-emerald to-brand-teal hover:opacity-95 shadow-md shadow-brand-emerald/20 transition-all duration-200"
+          >
+            <SparklesIcon className="w-4 h-4 text-dark-950" />
+            <span>Hire Me</span>
+          </button>
         </div>
-    );
+
+        {/* Mobile View: Theme Toggle + Hamburger Toggle */}
+        <div className="flex items-center gap-2 lg:hidden">
+          <ThemeToggle />
+          <button
+            onClick={openNav}
+            className="p-2.5 rounded-xl bg-slate-100 dark:bg-dark-900/80 border border-slate-200 dark:border-white/[0.08] text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors focus:outline-none"
+            aria-label="Open navigation menu"
+          >
+            <Bars3Icon className="w-6 h-6 text-brand-emerald" />
+          </button>
+        </div>
+      </div>
+    </header>
+  );
 };
 
 export default Nav;

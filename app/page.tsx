@@ -1,17 +1,15 @@
-"use client"
-import About from '@/components/About';
-import Blog from '@/components/Blog';
-import Footer from '@/components/Footer';
-import Hero from '@/components/Hero';
-import MobileNav from '@/components/MobileNav';
+'use client';
+
+import { useState } from 'react';
 import Nav from '@/components/Nav';
-import Projects from '@/components/Projects';
-import Services from '@/components/Services';
+import MobileNav from '@/components/MobileNav';
+import Hero from '@/components/Hero';
+import About from '@/components/About';
 import Skills from '@/components/Skills';
+import Services from '@/components/Services';
+import Projects from '@/components/Projects';
 import Testimonial from '@/components/Testimonial';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import { useEffect, useState } from 'react';
+import Footer from '@/components/Footer';
 
 export default function Home() {
   const [nav, setNav] = useState(false);
@@ -21,60 +19,33 @@ export default function Home() {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-        window.scrollTo({
-            top: element.offsetTop,
-            behavior: 'smooth',
-        });
+      const navHeight = 80;
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({
+        top: sectionId === 'home' ? 0 : elementPosition - navHeight,
+        behavior: 'smooth',
+      });
     }
-};
-
-  useEffect(() => {
-
-    // You can also pass an optional settings object
-    // below listed default settings
-    AOS.init({
-      // Global settings:
-      disable: false, // accepts following values: 'phone', 'tablet', 'mobile', boolean, expression or function
-      startEvent: 'DOMContentLoaded', // name of the event dispatched on the document, that AOS should initialize on
-      initClassName: 'aos-init', // class applied after initialization
-      animatedClassName: 'aos-animate', // class applied on animation
-      useClassNames: false, // if true, will add content of `data-aos` as classes on scroll
-      disableMutationObserver: false, // disables automatic mutations' detections (advanced)
-      debounceDelay: 50, // the delay on debounce used while resizing window (advanced)
-      throttleDelay: 99, // the delay on throttle used while scrolling the page (advanced)
-
-
-      // Settings that can be overridden on per-element basis, by `data-aos-*` attributes:
-      offset: 120, // offset (in px) from the original trigger point
-      delay: 0, // values from 0 to 3000, with step 50ms
-      duration: 1000, // values from 0 to 3000, with step 50ms
-      easing: 'ease', // default easing for AOS animations
-      once: true, // whether animation should happen only once - while scrolling down
-      mirror: false, // whether elements should animate out while scrolling past them
-      anchorPlacement: 'top-bottom', // defines which position of the element regarding to window should trigger the animation
-
-    });
-  }, []);
+  };
 
   return (
-    <>
-      <div className='overflow-x-hidden'>
-        <div>
-          <MobileNav nav={nav} closeNav={closeNav} scrollToSection={scrollToSection} />
-          <Nav openNav={openNav} />
+    <div className="min-h-screen bg-white text-slate-900 dark:bg-dark-950 dark:text-slate-100 overflow-x-hidden selection:bg-brand-emerald selection:text-black transition-colors duration-300">
+      {/* Navigation Header */}
+      <Nav openNav={openNav} />
+      <MobileNav nav={nav} closeNav={closeNav} scrollToSection={scrollToSection} />
 
-          <Hero />
-          {/* <div className='relative z-[30]'> */}
-            <About />
-            <Skills />
-            <Services />
-            <Projects />
-            <Testimonial />
-            {/* <Blog /> */}
-            <Footer />
-          </div>
-        {/* </div> */}
-      </div>
-    </>
+      {/* Main Content Sections */}
+      <main id="main-content">
+        <Hero />
+        <About />
+        <Skills />
+        <Services />
+        <Projects />
+        <Testimonial />
+      </main>
+
+      {/* Footer & Contact Section */}
+      <Footer />
+    </div>
   );
-};
+}
