@@ -37,7 +37,6 @@ const Nav = ({ openNav }: Props) => {
         { id: 'skills', label: 'Skills' },
         { id: 'services', label: 'Services' },
         { id: 'project', label: 'Projects' },
-        { id: 'testimonial', label: 'Testimonials' },
         { id: 'contact', label: 'Contact' },
       ];
 
@@ -64,7 +63,6 @@ const Nav = ({ openNav }: Props) => {
     { id: 'skills', label: 'Skills' },
     { id: 'services', label: 'Services' },
     { id: 'project', label: 'Projects' },
-    { id: 'testimonial', label: 'Testimonials' },
     { id: 'contact', label: 'Contact' },
   ];
 
@@ -127,7 +125,6 @@ const Nav = ({ openNav }: Props) => {
 
         {/* Right Action CTA & Theme Toggle */}
         <div className="hidden sm:flex items-center gap-3">
-          {/* Theme Toggle Button */}
           <ThemeToggle />
 
           <a
@@ -148,7 +145,7 @@ const Nav = ({ openNav }: Props) => {
           </button>
         </div>
 
-        {/* Mobile View: Theme Toggle + Hamburger Toggle */}
+        {/* Mobile View */}
         <div className="flex items-center gap-2 lg:hidden">
           <ThemeToggle />
           <button

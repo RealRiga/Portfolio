@@ -17,7 +17,6 @@ const MobileNav = ({ nav, closeNav, scrollToSection }: Props) => {
     { id: 'skills', label: 'Skills & Tech' },
     { id: 'services', label: 'Services' },
     { id: 'project', label: 'Projects' },
-    { id: 'testimonial', label: 'Testimonials' },
     { id: 'contact', label: 'Contact' },
   ];
 

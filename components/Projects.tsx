@@ -1,102 +1,27 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { ArrowTopRightOnSquareIcon, CodeBracketIcon } from '@heroicons/react/24/outline';
-
-interface Project {
-  id: string;
-  title: string;
-  category: 'web' | 'ecommerce' | 'fullstack';
-  categoryLabel: string;
-  description: string;
-  image: string;
-  demoUrl: string;
-  githubUrl?: string;
-  technologies: string[];
-  featured?: boolean;
-}
+import { Project, defaultProjects } from '@/lib/projects';
 
 const Projects = () => {
+  const [projects, setProjects] = useState<Project[]>(defaultProjects);
   const [filter, setFilter] = useState<string>('all');
 
-  const projects: Project[] = [
-    {
-      id: 'fan-nation',
-      title: 'Fan Nation - Interactive Community Platform',
-      category: 'web',
-      categoryLabel: 'Web Application',
-      description:
-        'A comprehensive fan engagement web platform delivering real-time media streams, dynamic community feeds, and high-performance interactive interfaces.',
-      image: '/image/project1.png',
-      demoUrl: 'https://fan0fannation.netlify.app/',
-      githubUrl: 'https://github.com/RealRiga',
-      technologies: ['React', 'JavaScript', 'Tailwind CSS', 'Netlify', 'REST APIs'],
-      featured: true,
-    },
-    {
-      id: 'crystal-store',
-      title: 'Crystal Store - Modern E-Commerce',
-      category: 'ecommerce',
-      categoryLabel: 'E-Commerce',
-      description:
-        'An elegant digital retail store with responsive product galleries, interactive cart functionality, checkout workflow, and clean UI components.',
-      image: '/image/project3.png',
-      demoUrl: 'https://crystal-store.vercel.app/',
-      githubUrl: 'https://github.com/RealRiga',
-      technologies: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Vercel'],
-      featured: true,
-    },
-    {
-      id: 'personal-portfolio',
-      title: 'Adeola Yisa - Developer Portfolio',
-      category: 'fullstack',
-      categoryLabel: 'Portfolio & Brand',
-      description:
-        'Modern, high-performance portfolio website engineered with Next.js 14, Tailwind CSS, dual light & dark mode aesthetics, and micro-animations for showcasing engineering craft.',
-      image: '/image/project2.png',
-      demoUrl: 'https://adeolaportfolio.vercel.app/',
-      githubUrl: 'https://github.com/RealRiga/New_Portfolio',
-      technologies: ['Next.js 14', 'TypeScript', 'Tailwind CSS', 'AOS', 'SEO Optimized'],
-      featured: true,
-    },
-    {
-      id: 'dashboard-system',
-      title: 'Enterprise Analytics & Management Dashboard',
-      category: 'fullstack',
-      categoryLabel: 'SaaS Platform',
-      description:
-        'Comprehensive data dashboard providing metric visualizations, multi-user role management, responsive tables, and secure backend integration.',
-      image: '/image/p1.jpg',
-      demoUrl: 'https://fan0fannation.netlify.app/',
-      githubUrl: 'https://github.com/RealRiga',
-      technologies: ['React', 'Node.js', 'PostgreSQL', 'Tailwind CSS', 'Chart.js'],
-    },
-    {
-      id: 'cross-platform-app',
-      title: 'Mobile Task & Workflow Organizer',
-      category: 'web',
-      categoryLabel: 'Mobile & Web',
-      description:
-        'Cross-platform task tracking application featuring local persistence, categorized priority boards, and synchronization across devices.',
-      image: '/image/p2.jpg',
-      demoUrl: 'https://crystal-store.vercel.app/',
-      githubUrl: 'https://github.com/RealRiga',
-      technologies: ['Flutter', 'Dart', 'Firebase', 'State Management'],
-    },
-    {
-      id: 'api-service-hub',
-      title: 'Distributed API Gateway & Service Hub',
-      category: 'fullstack',
-      categoryLabel: 'Backend Architecture',
-      description:
-        'High-performance backend API service built with C# and Java, handling token authentication, rate limiting, and structured JSON payloads.',
-      image: '/image/p3.jpg',
-      demoUrl: 'https://adeolaportfolio.vercel.app/',
-      githubUrl: 'https://github.com/RealRiga',
-      technologies: ['C#', '.NET', 'Java', 'REST APIs', 'SQL Database'],
-    },
-  ];
+  useEffect(() => {
+    fetch('/api/projects')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.projects)) {
+          setProjects(data.projects);
+        }
+      })
+      .catch((err) => {
+        console.error('Failed to fetch projects, using fallback:', err);
+      });
+  }, []);
 
   const filteredProjects =
     filter === 'all'
@@ -117,7 +42,7 @@ const Projects = () => {
             Featured <span className="accent-gradient">Work & Projects</span>
           </h2>
           <p className="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-300">
-            A selection of production web applications, e-commerce stores, and software solutions built with precision.
+            A selection of production web applications, cross-platform mobile apps, and full-stack software solutions.
           </p>
         </div>
 
@@ -126,6 +51,7 @@ const Projects = () => {
           {[
             { id: 'all', label: 'All Projects' },
             { id: 'web', label: 'Web Applications' },
+            { id: 'mobile', label: 'Mobile Apps' },
             { id: 'ecommerce', label: 'E-Commerce' },
             { id: 'fullstack', label: 'Full-Stack Systems' },
           ].map((tab) => (

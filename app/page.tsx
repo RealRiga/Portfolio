@@ -8,7 +8,6 @@ import About from '@/components/About';
 import Skills from '@/components/Skills';
 import Services from '@/components/Services';
 import Projects from '@/components/Projects';
-import Testimonial from '@/components/Testimonial';
 import Footer from '@/components/Footer';
 
 export default function Home() {
@@ -41,7 +40,6 @@ export default function Home() {
         <Skills />
         <Services />
         <Projects />
-        <Testimonial />
       </main>
 
       {/* Footer & Contact Section */}
@@ -49,3 +47,4 @@ export default function Home() {
     </div>
   );
 }
+
