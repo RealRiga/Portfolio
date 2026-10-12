@@ -27,7 +27,8 @@ import ThemeToggle from '@/components/ThemeToggle';
 import { Project, defaultProjects } from '@/lib/projects';
 import { SiteSettings, defaultSettings } from '@/lib/settings';
 
-const DEFAULT_PASSCODE = 'Only1Riga2026';
+const DEFAULT_PASSCODE = 'RealRiga2026';
+const LEGACY_PASSCODE = 'Only1Riga2026';
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -54,7 +55,7 @@ export default function AdminPage() {
   const [formDescription, setFormDescription] = useState('');
   const [formImage, setFormImage] = useState('/image/project1.png');
   const [formDemoUrl, setFormDemoUrl] = useState('');
-  const [formGithubUrl, setFormGithubUrl] = useState('https://github.com/RealOnly1Riga');
+  const [formGithubUrl, setFormGithubUrl] = useState('https://github.com/RealRiga');
   const [formTechnologies, setFormTechnologies] = useState('');
   const [formFeatured, setFormFeatured] = useState(false);
   const [formVisible, setFormVisible] = useState(true);
@@ -63,7 +64,7 @@ export default function AdminPage() {
 
   // Check auth session
   useEffect(() => {
-    const sessionAuth = sessionStorage.getItem('Only1Riga_admin_auth');
+    const sessionAuth = sessionStorage.getItem('RealRiga_admin_auth') || sessionStorage.getItem('Only1Riga_admin_auth');
     if (sessionAuth === 'true') {
       setIsAuthenticated(true);
     }
@@ -130,9 +131,10 @@ export default function AdminPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (passcode.trim() === DEFAULT_PASSCODE) {
+    const entered = passcode.trim();
+    if (entered === DEFAULT_PASSCODE || entered === LEGACY_PASSCODE) {
       setIsAuthenticated(true);
-      sessionStorage.setItem('Only1Riga_admin_auth', 'true');
+      sessionStorage.setItem('RealRiga_admin_auth', 'true');
       setAuthError('');
     } else {
       setAuthError('Incorrect passcode. Please try again.');
@@ -141,6 +143,7 @@ export default function AdminPage() {
 
   const handleLogout = () => {
     setIsAuthenticated(false);
+    sessionStorage.removeItem('RealRiga_admin_auth');
     sessionStorage.removeItem('Only1Riga_admin_auth');
     setPasscode('');
   };
@@ -153,7 +156,7 @@ export default function AdminPage() {
     setFormDescription('');
     setFormImage('/image/project1.png');
     setFormDemoUrl('https://');
-    setFormGithubUrl('https://github.com/RealOnly1Riga');
+    setFormGithubUrl('https://github.com/RealRiga');
     setFormTechnologies('React, TypeScript, Tailwind CSS');
     setFormFeatured(false);
     setFormVisible(true);
@@ -169,7 +172,7 @@ export default function AdminPage() {
     setFormDescription(p.description);
     setFormImage(p.image);
     setFormDemoUrl(p.demoUrl);
-    setFormGithubUrl(p.githubUrl || 'https://github.com/RealOnly1Riga');
+    setFormGithubUrl(p.githubUrl || 'https://github.com/RealRiga');
     setFormTechnologies(p.technologies.join(', '));
     setFormFeatured(p.featured);
     setFormVisible(p.visible !== false);
@@ -1295,7 +1298,7 @@ export default function AdminPage() {
                     type="url"
                     value={formGithubUrl}
                     onChange={(e) => setFormGithubUrl(e.target.value)}
-                    placeholder="https://github.com/RealOnly1Riga/..."
+                    placeholder="https://github.com/RealRiga/..."
                     className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-950 border border-slate-200 dark:border-white/[0.08] text-sm focus:outline-none focus:border-brand-emerald"
                   />
                 </div>

@@ -134,7 +134,7 @@ const About = () => {
                 </p>
                 <div className="flex items-center justify-between text-[11px] font-mono text-slate-500 dark:text-slate-400">
                   <span className="font-semibold text-slate-900 dark:text-white">Adeola Yisa</span>
-                  <span className="text-brand-emerald font-semibold">@RealOnly1Riga</span>
+                  <span className="text-brand-emerald font-semibold">@RealRiga</span>
                 </div>
               </div>
             </div>
@@ -197,7 +197,7 @@ const About = () => {
               </a>
 
               <a
-                href="https://github.com/RealOnly1Riga"
+                href="https://github.com/RealRiga"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-5 py-3 rounded-xl font-semibold text-sm text-slate-700 dark:text-slate-200 bg-white hover:bg-slate-100 dark:bg-dark-850 dark:hover:bg-dark-800 border border-slate-200 dark:border-white/[0.08] hover:text-slate-900 dark:hover:text-white transition-colors flex items-center gap-2 shadow-sm"

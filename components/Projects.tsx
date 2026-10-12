@@ -240,7 +240,7 @@ const Projects = () => {
                   </a>
 
                   <a
-                    href={project.githubUrl || 'https://github.com/RealOnly1Riga'}
+                    href={project.githubUrl || 'https://github.com/RealRiga'}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors"

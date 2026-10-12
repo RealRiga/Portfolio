@@ -47,7 +47,7 @@ const TestimonialSlider = () => {
           image="/image/eze.jpg"
           name="Mr. Ezechukwu Williams Ojukwu"
           role="Web & Mobile Engineer"
-          text="Working with Only1Riga was seamless. Highly punctual, proactive with architecture suggestions, and delivers clean maintainable components that exceed requirements."
+          text="Working with RealRiga was seamless. Highly punctual, proactive with architecture suggestions, and delivers clean maintainable components that exceed requirements."
           project="Full-Stack Application"
         />
         <ClientReview

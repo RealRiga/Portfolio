@@ -27,7 +27,7 @@ const Blog = () => {
                     <div className='flex flex-col md:flex-row items-center mt-[1rem] space-x-4'>
                         <div className='flex items-center space-x-3'>
                             <UserCircleIcon className='w-[1.5rem] mx-auto h-[1.5rem] text-[#55e6a5]'/>
-                            <p className='text-white'>By Only1Riga</p>
+                            <p className='text-white'>By RealRiga</p>
                         </div>
                         <div className='flex items-center spaxe-x-3'>
                             <ChatBubbleLeftRightIcon className='w-[1.5rem] mx-auto h-[1.5rem] text-[#55e6a5]'/>
