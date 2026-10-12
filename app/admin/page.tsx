@@ -437,7 +437,7 @@ export default function AdminPage() {
                 required
                 value={passcode}
                 onChange={(e) => setPasscode(e.target.value)}
-                placeholder="Enter passcode (default: Only1Riga2026)"
+                placeholder="Enter admin passcode"
                 className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-dark-950 border border-slate-200 dark:border-white/[0.08] focus:border-brand-emerald focus:outline-none text-sm transition-colors"
               />
             </div>
@@ -457,7 +457,7 @@ export default function AdminPage() {
           </form>
 
           <p className="mt-6 text-center text-[11px] text-slate-400 dark:text-slate-500">
-            Default master passcode: <code className="font-mono text-brand-emerald">Only1Riga2026</code>
+            Authorized administrator access only.
           </p>
         </div>
       </div>
