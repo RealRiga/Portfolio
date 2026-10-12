@@ -5,11 +5,11 @@ import { ThemeProvider } from '@/components/ThemeProvider';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://adeolaportfolio.vercel.app'),
-  title: 'Adeola Yisa (Riga) | Full-Stack & Mobile Developer',
-  description: 'Portfolio of Adeola Yisa (Riga) - A passionate Full-Stack Software Engineer & Mobile Developer specializing in React, Next.js, TypeScript, Flutter, C#, and scalable backend systems.',
+  title: 'Adeola Yisa (Only1Riga) | Full-Stack & Mobile Developer',
+  description: 'Portfolio of Adeola Yisa (Only1Riga) - A passionate Full-Stack Software Engineer & Mobile Developer specializing in React, Next.js, TypeScript, Flutter, C#, and scalable backend systems.',
   keywords: [
     'Adeola Yisa',
-    'Riga',
+    'Only1Riga',
     'Full Stack Developer',
     'Software Engineer',
     'Next.js Developer',
@@ -25,12 +25,12 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://adeolaportfolio.vercel.app',
-    title: 'Adeola Yisa (Only1Riga) | Full-Stack & Mobile Developer',
+    title: 'Adeola Yisa (Only1Only1Riga) | Full-Stack & Mobile Developer',
     description: 'Specializing in building high-performance web applications and fluid cross-platform mobile experiences.',
     siteName: 'Adeola Yisa Portfolio',
     images: [
       {
-        url: '/image/riga.jpg',
+        url: '/image/Only1Riga.jpg',
         width: 800,
         height: 800,
         alt: 'Adeola Yisa Profile',

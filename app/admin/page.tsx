@@ -27,7 +27,7 @@ import ThemeToggle from '@/components/ThemeToggle';
 import { Project, defaultProjects } from '@/lib/projects';
 import { SiteSettings, defaultSettings } from '@/lib/settings';
 
-const DEFAULT_PASSCODE = 'riga2026';
+const DEFAULT_PASSCODE = 'Only1Riga2026';
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -54,7 +54,7 @@ export default function AdminPage() {
   const [formDescription, setFormDescription] = useState('');
   const [formImage, setFormImage] = useState('/image/project1.png');
   const [formDemoUrl, setFormDemoUrl] = useState('');
-  const [formGithubUrl, setFormGithubUrl] = useState('https://github.com/RealRiga');
+  const [formGithubUrl, setFormGithubUrl] = useState('https://github.com/RealOnly1Riga');
   const [formTechnologies, setFormTechnologies] = useState('');
   const [formFeatured, setFormFeatured] = useState(false);
   const [formVisible, setFormVisible] = useState(true);
@@ -63,7 +63,7 @@ export default function AdminPage() {
 
   // Check auth session
   useEffect(() => {
-    const sessionAuth = sessionStorage.getItem('riga_admin_auth');
+    const sessionAuth = sessionStorage.getItem('Only1Riga_admin_auth');
     if (sessionAuth === 'true') {
       setIsAuthenticated(true);
     }
@@ -132,7 +132,7 @@ export default function AdminPage() {
     e.preventDefault();
     if (passcode.trim() === DEFAULT_PASSCODE) {
       setIsAuthenticated(true);
-      sessionStorage.setItem('riga_admin_auth', 'true');
+      sessionStorage.setItem('Only1Riga_admin_auth', 'true');
       setAuthError('');
     } else {
       setAuthError('Incorrect passcode. Please try again.');
@@ -141,7 +141,7 @@ export default function AdminPage() {
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    sessionStorage.removeItem('riga_admin_auth');
+    sessionStorage.removeItem('Only1Riga_admin_auth');
     setPasscode('');
   };
 
@@ -153,7 +153,7 @@ export default function AdminPage() {
     setFormDescription('');
     setFormImage('/image/project1.png');
     setFormDemoUrl('https://');
-    setFormGithubUrl('https://github.com/RealRiga');
+    setFormGithubUrl('https://github.com/RealOnly1Riga');
     setFormTechnologies('React, TypeScript, Tailwind CSS');
     setFormFeatured(false);
     setFormVisible(true);
@@ -169,7 +169,7 @@ export default function AdminPage() {
     setFormDescription(p.description);
     setFormImage(p.image);
     setFormDemoUrl(p.demoUrl);
-    setFormGithubUrl(p.githubUrl || 'https://github.com/RealRiga');
+    setFormGithubUrl(p.githubUrl || 'https://github.com/RealOnly1Riga');
     setFormTechnologies(p.technologies.join(', '));
     setFormFeatured(p.featured);
     setFormVisible(p.visible !== false);
@@ -437,7 +437,7 @@ export default function AdminPage() {
                 required
                 value={passcode}
                 onChange={(e) => setPasscode(e.target.value)}
-                placeholder="Enter passcode (default: riga2026)"
+                placeholder="Enter passcode (default: Only1Riga2026)"
                 className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-dark-950 border border-slate-200 dark:border-white/[0.08] focus:border-brand-emerald focus:outline-none text-sm transition-colors"
               />
             </div>
@@ -457,7 +457,7 @@ export default function AdminPage() {
           </form>
 
           <p className="mt-6 text-center text-[11px] text-slate-400 dark:text-slate-500">
-            Default master passcode: <code className="font-mono text-brand-emerald">riga2026</code>
+            Default master passcode: <code className="font-mono text-brand-emerald">Only1Riga2026</code>
           </p>
         </div>
       </div>
@@ -595,6 +595,46 @@ export default function AdminPage() {
                 <span>Reset Defaults</span>
               </button>
             </div>
+          </div>
+        </div>
+
+        {/* Featured Projects Section Master Visibility Card */}
+        <div className="p-6 rounded-2xl bg-white dark:bg-dark-900 border border-slate-200 dark:border-white/[0.08] shadow-sm mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <Squares2X2Icon className="w-5 h-5 text-brand-emerald" />
+                <h2 className="font-bold text-base text-slate-900 dark:text-white font-heading">
+                  Featured Projects Section on Homepage
+                </h2>
+                {settings.showProjectsSection ? (
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                    Visible on Live Site
+                  </span>
+                ) : (
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-200 dark:bg-dark-800 text-slate-500 border border-slate-300 dark:border-white/[0.06]">
+                    Hidden by Default
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                Control whether the &apos;Featured Work &amp; Projects&apos; section is rendered on your public portfolio homepage. Hidden by default.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => handleToggleSetting('showProjectsSection', 'Featured Projects Section')}
+              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                settings.showProjectsSection ? 'bg-brand-emerald' : 'bg-slate-300 dark:bg-dark-800'
+              }`}
+            >
+              <span
+                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                  settings.showProjectsSection ? 'translate-x-5' : 'translate-x-0'
+                }`}
+              />
+            </button>
           </div>
         </div>
 
@@ -1255,7 +1295,7 @@ export default function AdminPage() {
                     type="url"
                     value={formGithubUrl}
                     onChange={(e) => setFormGithubUrl(e.target.value)}
-                    placeholder="https://github.com/RealRiga/..."
+                    placeholder="https://github.com/RealOnly1Riga/..."
                     className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-950 border border-slate-200 dark:border-white/[0.08] text-sm focus:outline-none focus:border-brand-emerald"
                   />
                 </div>

@@ -54,6 +54,11 @@ const Projects = () => {
       ? currentPool
       : currentPool.filter((p) => p.category === filter);
 
+  // Check if section is enabled by admin (hidden by default per user request)
+  if (!settings.showProjectsSection) {
+    return null;
+  }
+
   return (
     <section id="project" className="py-24 bg-white dark:bg-dark-950 relative overflow-hidden transition-colors duration-300">
       {/* Background ambient light */}
@@ -235,7 +240,7 @@ const Projects = () => {
                   </a>
 
                   <a
-                    href={project.githubUrl || 'https://github.com/RealRiga'}
+                    href={project.githubUrl || 'https://github.com/RealOnly1Riga'}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors"

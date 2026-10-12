@@ -117,7 +117,7 @@ const Footer = () => {
             {/* GitHub & LinkedIn 2-Col Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <a
-                href="https://github.com/RealRiga"
+                href="https://github.com/RealOnly1Riga"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-4 rounded-2xl glass-panel hover:border-brand-emerald/40 transition-all flex items-center gap-3.5 group block shadow-sm"
@@ -130,7 +130,7 @@ const Footer = () => {
                 <div>
                   <div className="text-[10px] font-semibold uppercase text-slate-500 dark:text-slate-400 tracking-wider">GitHub</div>
                   <div className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white group-hover:text-brand-emerald transition-colors font-mono">
-                    @RealRiga
+                    @RealOnly1Riga
                   </div>
                 </div>
               </a>
@@ -293,12 +293,12 @@ const Footer = () => {
               </div>
             </div>
             <div className="text-xs text-slate-600 dark:text-slate-400">
-              © {currentYear} <strong className="text-slate-900 dark:text-white font-medium">Adeola Yisa (Riga)</strong>. Built with Next.js 14 & Tailwind CSS.
+              © {currentYear} <strong className="text-slate-900 dark:text-white font-medium">Adeola Yisa (Only1Riga)</strong>. Built with Next.js 14 & Tailwind CSS.
             </div>
           </div>
 
           <div className="flex items-center gap-6 text-xs text-slate-600 dark:text-slate-400">
-            <a href="https://github.com/RealRiga" target="_blank" rel="noopener noreferrer" className="hover:text-brand-emerald transition-colors">
+            <a href="https://github.com/RealOnly1Riga" target="_blank" rel="noopener noreferrer" className="hover:text-brand-emerald transition-colors">
               GitHub
             </a>
             <a href="https://www.linkedin.com/in/adeola-yisa-1536b4239" target="_blank" rel="noopener noreferrer" className="hover:text-brand-emerald transition-colors">

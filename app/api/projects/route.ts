@@ -39,7 +39,7 @@ export async function POST(request: Request) {
       description: body.description || '',
       image: body.image || '/image/project1.png',
       demoUrl: body.demoUrl || '#',
-      githubUrl: body.githubUrl || 'https://github.com/RealRiga',
+      githubUrl: body.githubUrl || 'https://github.com/RealOnly1Riga',
       technologies: Array.isArray(body.technologies)
         ? body.technologies
         : typeof body.technologies === 'string'

@@ -3,6 +3,8 @@
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { ArrowDownTrayIcon, SparklesIcon } from '@heroicons/react/20/solid';
 import ThemeToggle from './ThemeToggle';
+import { useState, useEffect } from 'react';
+import { SiteSettings, defaultSettings } from '@/lib/settings';
 
 interface Props {
   nav: boolean;
@@ -11,12 +13,25 @@ interface Props {
 }
 
 const MobileNav = ({ nav, closeNav, scrollToSection }: Props) => {
+  const [settings, setSettings] = useState<SiteSettings>(defaultSettings);
+
+  useEffect(() => {
+    fetch('/api/settings')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.success && data?.settings) {
+          setSettings(data.settings);
+        }
+      })
+      .catch((err) => console.error('Failed to load settings in MobileNav:', err));
+  }, []);
+
   const navItems = [
     { id: 'home', label: 'Home' },
     { id: 'about', label: 'About Me' },
     { id: 'skills', label: 'Skills & Tech' },
     { id: 'services', label: 'Services' },
-    { id: 'project', label: 'Projects' },
+    ...(settings.showProjectsSection ? [{ id: 'project', label: 'Projects' }] : []),
     { id: 'contact', label: 'Contact' },
   ];
 

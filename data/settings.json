@@ -1,6 +1,9 @@
 {
+  "showProjectsSection": false,
   "showEnterpriseMonorepos": false,
   "showPublishedApps": false,
   "showCrossPlatform": true,
-  "showBackendMicroservices": true
+  "showBackendMicroservices": true,
+  "portfolioProjectView": "all",
+  "showFeaturedSectionSeparation": true
 }

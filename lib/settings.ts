@@ -1,4 +1,5 @@
 export interface SiteSettings {
+  showProjectsSection: boolean; // Master toggle: whether "Featured Work & Projects" section is visible on homepage. Hidden by default per user request.
   showEnterpriseMonorepos: boolean;
   showPublishedApps: boolean;
   showCrossPlatform: boolean;
@@ -8,6 +9,7 @@ export interface SiteSettings {
 }
 
 export const defaultSettings: SiteSettings = {
+  showProjectsSection: false, // Hidden by default per user request!
   showEnterpriseMonorepos: false,
   showPublishedApps: false,
   showCrossPlatform: true,

@@ -4,6 +4,7 @@ import { Bars3Icon } from '@heroicons/react/24/outline';
 import { ArrowDownTrayIcon, SparklesIcon } from '@heroicons/react/20/solid';
 import { useEffect, useState } from 'react';
 import ThemeToggle from './ThemeToggle';
+import { SiteSettings, defaultSettings } from '@/lib/settings';
 
 interface Props {
   openNav: () => void;
@@ -12,6 +13,7 @@ interface Props {
 const Nav = ({ openNav }: Props) => {
   const [activeLink, setActiveLink] = useState('Home');
   const [scrolled, setScrolled] = useState(false);
+  const [settings, setSettings] = useState<SiteSettings>(defaultSettings);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -28,6 +30,17 @@ const Nav = ({ openNav }: Props) => {
   };
 
   useEffect(() => {
+    fetch('/api/settings')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.success && data?.settings) {
+          setSettings(data.settings);
+        }
+      })
+      .catch((err) => console.error('Failed to load settings in Nav:', err));
+  }, []);
+
+  useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
 
@@ -36,7 +49,7 @@ const Nav = ({ openNav }: Props) => {
         { id: 'about', label: 'About' },
         { id: 'skills', label: 'Skills' },
         { id: 'services', label: 'Services' },
-        { id: 'project', label: 'Projects' },
+        ...(settings.showProjectsSection ? [{ id: 'project', label: 'Projects' }] : []),
         { id: 'contact', label: 'Contact' },
       ];
 
@@ -55,14 +68,14 @@ const Nav = ({ openNav }: Props) => {
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [settings.showProjectsSection]);
 
   const navItems = [
     { id: 'home', label: 'Home' },
     { id: 'about', label: 'About' },
     { id: 'skills', label: 'Skills' },
     { id: 'services', label: 'Services' },
-    { id: 'project', label: 'Projects' },
+    ...(settings.showProjectsSection ? [{ id: 'project', label: 'Projects' }] : []),
     { id: 'contact', label: 'Contact' },
   ];
 
